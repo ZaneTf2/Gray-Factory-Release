@@ -1,0 +1,12 @@
+{
+    "name": "browser-servers",
+    "scripts": {
+        "dev": "webpack --watch --mode none",
+        "build": "webpack"
+    },
+    "devDependencies": {
+        "server": "workspace:^",
+        "tsconfig": "workspace:^",
+        "vscode-languageserver": "*"
+    }
+}

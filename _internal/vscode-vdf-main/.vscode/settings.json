@@ -1,0 +1,25 @@
+{
+    "[github-actions-workflow]": {
+        "editor.insertSpaces": true,
+        "editor.tabSize": 2
+    },
+    "[json][jsonc][snippets]": {
+        "editor.insertSpaces": true,
+        "editor.tabSize": 4
+    },
+    "dotnet.defaultSolution": "vscode-vdf.slnx",
+    "files.associations": {
+        "**/snippets/*.json": "snippets",
+        "*.mdx": "markdown",
+        "*.slnx": "xml",
+    },
+    "files.exclude": {
+        "**/.DS_Store": true,
+        "**/.git": true,
+        "**/.hg": true,
+        "**/.svn": true,
+        "**/CVS": true,
+        "**/Thumbs.db": true
+    },
+    "typescript.tsdk": "node_modules/typescript/lib"
+}

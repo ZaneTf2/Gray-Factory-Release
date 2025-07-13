@@ -1,0 +1,532 @@
+{
+    "name": "vscode-vdf",
+    "displayName": "VSCode VDF",
+    "description": "VDF language support for VSCode",
+    "keywords": [
+        "hud",
+        "hudanimations",
+        "mvm",
+        "pop",
+        "popfile",
+        "tf2",
+        "vdf",
+        "vmt",
+        "vtf"
+    ],
+    "version": "5.5.6",
+    "publisher": "pfwobcke",
+    "icon": "icon.png",
+    "galleryBanner": {
+        "color": "#161616",
+        "theme": "dark"
+    },
+    "categories": [
+        "Formatters",
+        "Linters",
+        "Programming Languages",
+        "Snippets"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/cooolbros/vscode-vdf"
+    },
+    "engines": {
+        "vscode": "^1.97.0"
+    },
+    "activationEvents": [
+        "onFileSystem:vpk"
+    ],
+    "main": "./apps/extension/desktop/client/dist/extension.js",
+    "browser": "./apps/extension/browser/client/dist/extension.js",
+    "contributes": {
+        "commands": [
+            {
+                "category": "VDF",
+                "title": "Copy Key/Value Path To Clipboard",
+                "command": "vscode-vdf.copyKeyValuePath"
+            },
+            {
+                "category": "VPK",
+                "title": "Extract file to workspace",
+                "command": "vscode-vdf.extractVPKFileToWorkspace",
+                "icon": "$(file-add)"
+            },
+            {
+                "category": "Popfile",
+                "title": "Import #base templates into current popfile",
+                "command": "vscode-vdf.importPopfileTemplates",
+                "when": "editorLangId == popfile"
+            },
+            {
+                "category": "VDF",
+                "title": "Convert JSON to VDF",
+                "command": "vscode-vdf.JSONToVDF"
+            },
+            {
+                "category": "HUD Animations",
+                "title": "Restart HUD Animations Language Server",
+                "command": "vscode-vdf.restartHUDAnimationsLanguageServer"
+            },
+            {
+                "category": "Popfile",
+                "title": "Restart Popfile Language Server",
+                "command": "vscode-vdf.restartPopfileLanguageServer"
+            },
+            {
+                "category": "Popfile",
+                "title": "Open Wave Status Preview to the Side",
+                "command": "vscode-vdf.showWaveStatusPreviewToSide",
+                "when": "editorLangId == popfile"
+            },
+            {
+                "category": "VDF",
+                "title": "Restart VDF Language Server",
+                "command": "vscode-vdf.restartVDFLanguageServer"
+            },
+            {
+                "category": "VMT",
+                "title": "Restart VMT Language Server",
+                "command": "vscode-vdf.restartVMTLanguageServer"
+            },
+            {
+                "category": "VDF",
+                "command": "vscode-vdf.selectTeamFortress2Folder",
+                "title": "Select Team Fortress 2 folder"
+            },
+            {
+                "category": "VDF",
+                "title": "Convert VDF to JSON",
+                "command": "vscode-vdf.VDFToJSON"
+            },
+            {
+                "category": "Popfile",
+                "title": "Copy image",
+                "command": "vscode-vdf.waveStatusPreviewCopyImage",
+                "when": "webviewId == 'vscode-vdf.waveStatusPreview'"
+            },
+            {
+                "category": "Popfile",
+                "title": "Save image as...",
+                "command": "vscode-vdf.waveStatusPreviewSaveImageAs",
+                "when": "webviewId == 'vscode-vdf.waveStatusPreview'"
+            }
+        ],
+        "configurationDefaults": {
+            "[popfile]": {
+                "editor.foldingStrategy": "indentation"
+            }
+        },
+        "configuration": [
+            {
+                "title": "VSCode VDF",
+                "properties": {
+                    "vscode-vdf.filesAutoCompletionKind": {
+                        "type": "string",
+                        "description": "Controls the behaviour of suggesting autocompletion file items.",
+                        "enum": [
+                            "incremental",
+                            "all"
+                        ],
+                        "enumDescriptions": [
+                            "Show only files in suggested folder and suggest child items when a folder is selected.",
+                            "Suggest all files recursively."
+                        ],
+                        "default": "incremental"
+                    },
+                    "vscode-vdf.teamFortress2Folder": {
+                        "type": "string",
+                        "markdownDescription": "Path to `Team Fortress 2` folder.\n\n[Select Folder](command:vscode-vdf.selectTeamFortress2Folder)",
+                        "default": "C:/Program Files (x86)/Steam/steamapps/common/Team Fortress 2",
+                        "examples": [
+                            "~/.local/share/Steam/steamapps/common/Team Fortress 2"
+                        ]
+                    },
+                    "vscode-vdf.updateDiagnosticsEvent": {
+                        "type": "string",
+                        "enum": [
+                            "type",
+                            "save"
+                        ],
+                        "enumDescriptions": [
+                            "Update file diagnostics in real time.",
+                            "Update file diagnostics when the file is saved."
+                        ],
+                        "description": "Controls when to update file diagnostics",
+                        "default": "type"
+                    },
+                    "vscode-vdf.vtf.formats.exclude": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                "RGBA8888",
+                                "ABGR8888",
+                                "RGB888",
+                                "BGR888",
+                                "RGB565",
+                                "I8",
+                                "IA88",
+                                "P8",
+                                "A8",
+                                "RGB888BlueScreen",
+                                "BGR888BlueScreen",
+                                "ARGB8888",
+                                "BGRA8888",
+                                "DXT1",
+                                "DXT3",
+                                "DXT5",
+                                "BGRX8888",
+                                "BGR565",
+                                "BGRX5551",
+                                "BGRA4444",
+                                "DXT1OneBitAlpha",
+                                "BGRA5551",
+                                "UV88",
+                                "UVWQ8888",
+                                "RGBA16161616F",
+                                "RGBA16161616",
+                                "UVLX8888"
+                            ]
+                        },
+                        "default": [],
+                        "description": "List of which VTF formats to ignore"
+                    }
+                }
+            },
+            {
+                "title": "HUD Animations",
+                "properties": {
+                    "vscode-vdf.hudanimations.format.insertNewlineAfterEvents": {
+                        "type": "boolean",
+                        "description": "Whether to insert a newline after events when formatting.",
+                        "default": true
+                    },
+                    "vscode-vdf.hudanimations.format.layoutScope": {
+                        "type": "string",
+                        "description": "Controls the scope to align tokens with when formatting HUD animations.",
+                        "enum": [
+                            "event",
+                            "file"
+                        ],
+                        "enumDescriptions": [
+                            "Align tokens with only tokens in event",
+                            "Align tokens with all tokens in file"
+                        ],
+                        "default": "event"
+                    },
+                    "vscode-vdf.hudanimations.format.tabs": {
+                        "type": "number",
+                        "description": "Controls the number of tabs to insert after a token when formatting HUD animations.",
+                        "minimum": 1,
+                        "default": 1
+                    },
+                    "vscode-vdf.hudanimations.suggest.enable": {
+                        "type": "boolean",
+                        "description": "Enable/disable autocomplete suggestions.",
+                        "default": true
+                    }
+                }
+            },
+            {
+                "title": "Popfile",
+                "properties": {
+                    "vscode-vdf.popfile.format.insertNewlineBeforeObjects": {
+                        "type": "boolean",
+                        "description": "Whether to insert a newline before objects when formatting.",
+                        "default": true
+                    },
+                    "vscode-vdf.popfile.format.quotes": {
+                        "type": "boolean",
+                        "description": "Whether to surround tokens with double quotes when formatting.",
+                        "default": false
+                    },
+                    "vscode-vdf.popfile.format.tabs": {
+                        "type": "number",
+                        "markdownDescription": "How many tabs to insert between keys and values when formatting. `-1` = Insert a single space",
+                        "default": 0
+                    },
+                    "vscode-vdf.popfile.suggest.enable": {
+                        "type": "boolean",
+                        "description": "Enable/disable autocomplete suggestions.",
+                        "default": true
+                    },
+                    "vscode-vdf.popfile.vscript.enable": {
+                        "type": "boolean",
+                        "description": "Enable/disable VScript language support.",
+                        "default": true
+                    },
+                    "vscode-vdf.popfile.waveStatusPreview.background.colour": {
+                        "type": "string",
+                        "description": "Background colour for Wave Status Preview.",
+                        "default": "rgb(31, 31, 31)"
+                    },
+                    "vscode-vdf.popfile.waveStatusPreview.background.sky": {
+                        "type": "boolean",
+                        "description": "Show/Hide sky for Wave Status Preview.",
+                        "default": true
+                    },
+                    "vscode-vdf.popfile.waveStatusPreview.font.bold": {
+                        "type": "string",
+                        "description": "Bold font for Wave Status Preview. Must be installed",
+                        "default": "TF2 Build"
+                    },
+                    "vscode-vdf.popfile.waveStatusPreview.font.regular": {
+                        "type": "string",
+                        "description": "Regular font for Wave Status Preview. Must be installed",
+                        "default": "TF2 Secondary"
+                    },
+                    "vscode-vdf.popfile.waveStatusPreview.panel.enable": {
+                        "type": "boolean",
+                        "description": "Show/Hide Wave Status Panel Background in Wave Status Preview.",
+                        "default": true
+                    }
+                }
+            },
+            {
+                "title": "VDF",
+                "properties": {
+                    "vscode-vdf.vdf.format.insertNewlineBeforeObjects": {
+                        "type": "boolean",
+                        "description": "Whether to insert a newline before objects when formatting.",
+                        "default": false
+                    },
+                    "vscode-vdf.vdf.format.quotes": {
+                        "type": "boolean",
+                        "description": "Whether to surround tokens with double quotes when formatting.",
+                        "default": true
+                    },
+                    "vscode-vdf.vdf.format.tabs": {
+                        "type": "number",
+                        "markdownDescription": "How many tabs to insert between keys and values when formatting. `-1` = Insert a single space",
+                        "default": 1
+                    },
+                    "vscode-vdf.vdf.suggest.enable": {
+                        "type": "boolean",
+                        "description": "Enable/disable autocomplete suggestions.",
+                        "default": true
+                    }
+                }
+            },
+            {
+                "title": "VMT",
+                "properties": {
+                    "vscode-vdf.vmt.format.insertNewlineBeforeObjects": {
+                        "type": "boolean",
+                        "description": "Whether to insert a newline before objects when formatting.",
+                        "default": false
+                    },
+                    "vscode-vdf.vmt.format.quotes": {
+                        "type": "boolean",
+                        "description": "Whether to surround tokens with double quotes when formatting.",
+                        "default": true
+                    },
+                    "vscode-vdf.vmt.format.tabs": {
+                        "type": "number",
+                        "markdownDescription": "How many tabs to insert between keys and values when formatting. `-1` = Insert a single space",
+                        "default": 1
+                    },
+                    "vscode-vdf.vmt.suggest.enable": {
+                        "type": "boolean",
+                        "description": "Enable/disable autocomplete suggestions.",
+                        "default": true
+                    }
+                }
+            }
+        ],
+        "customEditors": [
+            {
+                "viewType": "vscode-vdf.VTFEditor",
+                "displayName": "VTF Editor",
+                "selector": [
+                    {
+                        "filenamePattern": "*.vtf"
+                    }
+                ],
+                "priority": "default"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "hudanimations",
+                "scopeName": "source.hudanimations",
+                "path": "./packages/syntaxes/dist/hudanimations.tmLanguage.json"
+            },
+            {
+                "language": "popfile",
+                "scopeName": "source.popfile",
+                "path": "./packages/syntaxes/dist/popfile.tmLanguage.json",
+                "embeddedLanguages": {
+                    "meta.embedded.block.squirrel": "squirrel"
+                }
+            },
+            {
+                "language": "vmt",
+                "scopeName": "source.vmt",
+                "path": "./packages/syntaxes/dist/vmt.tmLanguage.json"
+            },
+            {
+                "language": "vdf",
+                "scopeName": "source.vdf",
+                "path": "./packages/syntaxes/dist/vdf.tmLanguage.json"
+            }
+        ],
+        "languages": [
+            {
+                "id": "hudanimations",
+                "aliases": [
+                    "Valve HUD Animations"
+                ],
+                "extensions": [
+                    ".hudanimations"
+                ],
+                "filenamePatterns": [
+                    "*hudanimations*.txt"
+                ],
+                "configuration": "./language-configuration/hudanimations-language-configuration.json"
+            },
+            {
+                "id": "popfile",
+                "aliases": [
+                    "Popfile"
+                ],
+                "extensions": [
+                    ".pop"
+                ],
+                "configuration": "./language-configuration/popfile-language-configuration.json"
+            },
+            {
+                "id": "vdf",
+                "aliases": [
+                    "VDF"
+                ],
+                "extensions": [
+                    ".res",
+                    ".vdf"
+                ],
+                "filenames": [
+                    "chapterbackgrounds.txt",
+                    "gameinfo.txt",
+                    "hudanimations_manifest.txt",
+                    "items_game.txt",
+                    "mod_textures.txt",
+                    "surfaceproperties.txt"
+                ],
+                "filenamePatterns": [
+                    "appmanifest_*.acf",
+                    "chat_*.txt",
+                    "game_sounds_*.txt",
+                    "surfaceproperties_*.txt",
+                    "tf_*.txt"
+                ],
+                "configuration": "./language-configuration/vdf-language-configuration.json"
+            },
+            {
+                "id": "vmt",
+                "aliases": [
+                    "Valve Material Type"
+                ],
+                "extensions": [
+                    ".vmt"
+                ],
+                "configuration": "./language-configuration/vdf-language-configuration.json"
+            }
+        ],
+        "menus": {
+            "commandPalette": [
+                {
+                    "command": "vscode-vdf.restartHUDAnimationsLanguageServer",
+                    "when": "editorLangId == hudanimations"
+                },
+                {
+                    "command": "vscode-vdf.restartPopfileLanguageServer",
+                    "when": "editorLangId == popfile"
+                },
+                {
+                    "command": "vscode-vdf.restartVDFLanguageServer",
+                    "when": "editorLangId == vdf"
+                },
+                {
+                    "command": "vscode-vdf.restartVMTLanguageServer",
+                    "when": "editorLangId == vmt"
+                }
+            ],
+            "editor/title": [
+                {
+                    "command": "vscode-vdf.extractVPKFileToWorkspace",
+                    "group": "navigation",
+                    "when": "resourceScheme == vpk && workspaceFolderCount > 0"
+                }
+            ],
+            "webview/context": [
+                {
+                    "command": "vscode-vdf.waveStatusPreviewSaveImageAs",
+                    "group": "navigation@1",
+                    "when": "webviewId == 'vscode-vdf.waveStatusPreview' && webviewSection == 'canvas'"
+                },
+                {
+                    "command": "vscode-vdf.waveStatusPreviewCopyImage",
+                    "group": "navigation@2",
+                    "when": "webviewId == 'vscode-vdf.waveStatusPreview' && webviewSection == 'canvas'"
+                }
+            ]
+        },
+        "snippets": [
+            {
+                "language": "vdf",
+                "path": "snippets/vdf.json"
+            }
+        ]
+    },
+    "scripts": {
+        "vscode:prepublish": "pnpm build",
+        "dev": "turbo dev",
+        "dev:desktop": "turbo dev --filter=desktop-*",
+        "dev:browser": "turbo dev --filter=browser-*",
+        "dev:docs": "turbo dev --filter=docs",
+        "dev:syntaxes": "turbo dev --filter=syntaxes",
+        "build": "turbo build",
+        "build:docs": "turbo build --filter=docs",
+        "build:syntaxes": "turbo build --filter=syntaxes",
+        "browser": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. .",
+        "package": "vsce package --no-dependencies"
+    },
+    "devDependencies": {
+        "@trpc/client": "^11.3.1",
+        "@trpc/server": "^11.3.1",
+        "@types/path-browserify": "^1.0.2",
+        "@types/vscode": "^1.97.0",
+        "@types/vscode-webview": "^1.57.5",
+        "@vscode/test-web": "^0.0.69",
+        "@vscode/vsce": "^3.5.0",
+        "disposablestack": "^1.1.7",
+        "path-browserify": "^1.0.1",
+        "rxjs": "^7.8.1",
+        "svelte": "^5.34.1",
+        "ts-loader": "^9.5.1",
+        "ts-node": "^10.9.2",
+        "turbo": "^2.5.0",
+        "typescript": "^5.8.2",
+        "vite": "^6.3.5",
+        "vscode-languageserver-textdocument": "^1.0.11",
+        "webpack": "^5.97.1",
+        "webpack-cli": "^5.1.4",
+        "zod": "^3.25.49"
+    },
+    "pnpm": {
+        "overrides": {
+            "vscode-languageclient": "^9.0.1",
+            "vscode-languageserver": "^9.0.1"
+        }
+    },
+    "vsce": {
+        "dependencies": false
+    },
+    "__metadata": {
+        "id": "93d4f61b-4a5a-436e-95d4-af591fe14d15",
+        "publisherDisplayName": "pfwobcke",
+        "publisherId": "0bca7cad-ed90-49e6-88a6-828825345806",
+        "isPreReleaseVersion": false,
+        "size": 2578099110
+    },
+    "packageManager": "pnpm@10.11.1"
+}

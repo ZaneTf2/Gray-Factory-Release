@@ -1,0 +1,13 @@
+{
+    "name": "browser-client",
+    "scripts": {
+        "dev": "webpack --watch --mode none",
+        "build": "webpack"
+    },
+    "devDependencies": {
+        "client": "workspace:^",
+        "common": "workspace:^",
+        "tsconfig": "workspace:^",
+        "vscode-languageclient": "*"
+    }
+}

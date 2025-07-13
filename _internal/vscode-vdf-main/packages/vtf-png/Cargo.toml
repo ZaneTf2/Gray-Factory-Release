@@ -1,0 +1,13 @@
+[package]
+name = "vtf-png"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+base64 = "0.22.1"
+image = "0.25.5"
+vtf = { version = "0.1.0", path = "../vtf" }
+wasm-bindgen = { workspace = true }

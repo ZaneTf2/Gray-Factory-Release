@@ -1,0 +1,45 @@
+{
+	"name": "popfile-language-support",
+	"displayName": "Popfile Language Support",
+	"description": "Syntax highlighting for the Valve popfile format.",
+	"version": "1.1.1",
+	"icon": "LanguagePop_color_128x.png",
+	"engines": {
+		"vscode": "^1.33.0"
+	},
+	"publisher": "PotatoMvM",
+	"repository": {
+		"type": "git",
+		"url": "https://gitlab.com/Swordstone/popfile-language-support-vscode"
+	},
+	"categories": [
+		"Programming Languages"
+	],
+	"contributes": {
+		"languages": [
+			{
+				"id": "popfile",
+				"aliases": [
+					"Popfile",
+					"popfile"
+				],
+				"extensions": [
+					".pop"
+				],
+				"configuration": "./language-configuration.json"
+			}
+		],
+		"grammars": [
+			{
+				"language": "popfile",
+				"scopeName": "source.pop",
+				"path": "./syntaxes/popfile.tmLanguage.json"
+			}
+		]
+	},
+	"__metadata": {
+		"id": "5a5289ae-4501-4aa7-a2b0-0a0c8baaa97c",
+		"publisherDisplayName": "Potato's MvM Servers",
+		"publisherId": "3dab5720-d457-44b6-9f9f-c2fa7ac17317"
+	}
+}

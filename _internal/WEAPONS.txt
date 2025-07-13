@@ -1,0 +1,619 @@
+Scout Primary "Scattergun"*tf_weapon_scattergun+Backpack_Scattergun
+Scout Primary "Force-A-Nature"*tf_weapon_scattergun+Backpack_Force-A-Nature
+Scout Primary "The Shortstop"*tf_weapon_handgun_scout_primary+Backpack_Shortstop
+Scout Primary "The Soda Popper"*tf_weapon_soda_popper+Backpack_Soda_Popper
+Scout Primary "Festive Scattergun"*tf_weapon_scattergun+scattergun_xmas
+Scout Primary "Baby Face's Blaster"*tf_weapon_pep_brawler_blaster+Babyfaceblaster
+Scout Primary "Silver Botkiller Scattergun Mk.I"*tf_weapon_scattergun
+Scout Primary "Gold Botkiller Scattergun Mk.I"*tf_weapon_scattergun
+Scout Primary "Rust Botkiller Scattergun Mk.I"*tf_weapon_scattergun
+Scout Primary "Blood Botkiller Scattergun Mk.I"*tf_weapon_scattergun
+Scout Primary "Carbonado Botkiller Scattergun Mk.I"*tf_weapon_scattergun
+Scout Primary "Diamond Botkiller Scattergun Mk.I"*tf_weapon_scattergun
+Scout Primary "Silver Botkiller Scattergun Mk.II"*tf_weapon_scattergun+fob_e_scattergun_engi
+Scout Primary "Gold Botkiller Scattergun Mk.II"*tf_weapon_scattergun+fob_e_scattergun_gold
+Scout Primary "Festive Force-A-Nature"*tf_weapon_scattergun+xms_double_barrel
+Scout Primary "The Back Scatter"*tf_weapon_scattergun+Backpack_Back_Scatter
+Scout Primary "Night Terror"*tf_weapon_scattergun
+Scout Primary "Tartan Torpedo"*tf_weapon_scattergun
+Scout Primary "Country Crusher"*tf_weapon_scattergun
+Scout Primary "Backcountry Blaster"*tf_weapon_scattergun
+Scout Primary "Spruce Deuce"*tf_weapon_scattergun
+Scout Primary "Current Event"*tf_weapon_scattergun
+Scout Primary "Macabre Web"*tf_weapon_scattergun
+Scout Primary "Nutcracker"*tf_weapon_scattergun
+Scout Primary "Blue Mew"*tf_weapon_scattergun
+Scout Primary "Flower Power"*tf_weapon_scattergun
+Scout Primary "Shot to Hell"*tf_weapon_scattergun
+Scout Primary "Coffin Nail"*tf_weapon_scattergun
+Scout Primary "Killer Bee"*tf_weapon_scattergun
+Scout Primary "Corsair"*tf_weapon_scattergun
+Scout Secondary "Scout's Pistol"*tf_weapon_pistol
+Scout Secondary "Pistol"*tf_weapon_pistol+pistol
+Scout Secondary "Bonk! Atomic Punch"*tf_weapon_lunchbox_drink+Backpack_Bonk!_Atomic_Punch
+Scout Secondary "Vintage Lugermorph"*tf_weapon_pistol
+Scout Secondary "Crit-a-Cola"*tf_weapon_lunchbox_drink+Backpack_Crit-a-Cola
+Scout Secondary "Mad Milk"*tf_weapon_jar_milk+Backpack_Mad_Milk
+Scout Secondary "Lugermorph"*tf_weapon_pistol
+Scout Secondary "The Winger"*tf_weapon_handgun_scout_secondary+Backpack_Winger
+Scout Secondary "Pretty Boy's Pocket Pistol"*tf_weapon_handgun_scout_secondary+Backpack_Pretty_Pocket_Pistol
+Scout Secondary "The Flying Guillotine"*tf_weapon_cleaver+Backpack_Flying_Guillotine
+Scout Secondary "The Flying Guillotine (Genuine)"*tf_weapon_cleaver+Backpack_Flying_Guillotine
+Scout Secondary "Mutated Milk"*tf_weapon_jar_milk+Backpack_Mutated_Milk+breadmonster_milk
+Scout Secondary "Festive Bonk!"*tf_weapon_lunchbox_drink+xms_energy_drink
+Scout Secondary "Red Rock Roscoe"*tf_weapon_pistol
+Scout Secondary "Homemade Heater"*tf_weapon_pistol
+Scout Secondary "Hickory Holepuncher"*tf_weapon_pistol
+Scout Secondary "Local Hero"*tf_weapon_pistol
+Scout Secondary "Black Dahlia"*tf_weapon_pistol
+Scout Secondary "Sandstone Special"*tf_weapon_pistol
+Scout Secondary "Macabre Web"*tf_weapon_pistol
+Scout Secondary "Nutcracker"*tf_weapon_pistol
+Scout Secondary "Blue Mew"*tf_weapon_pistol
+Scout Secondary "Brain Candy"*tf_weapon_pistol
+Scout Secondary "Shot to Hell"*tf_weapon_pistol
+Scout Secondary "Dressed To Kill"*tf_weapon_pistol
+Scout Secondary "Blitzkrieg"*tf_weapon_pistol
+Scout Secondary "The C.A.P.P.E.R."*tf_weapon_pistol+Backpack_C.A.P.P.E.R
+Scout Melee "Bat"*tf_weapon_bat+Backpack_Bat
+Scout Melee "The Sandman"*tf_weapon_bat_wood+Backpack_Sandman
+Scout Melee "The Holy Mackerel"*tf_weapon_bat_fish+holymackerel
+Scout Melee "Frying Pan"*saxxy+Backpack_Frying_Pan
+Scout Melee "The Candy Cane"*tf_weapon_bat+Backpack_Candy_Cane
+Scout Melee "The Boston Basher"*tf_weapon_bat+Backpack_Boston_Basher+basher
+Scout Melee "Sun-on-a-Stick"*tf_weapon_bat+Backpack_Sun-on-a-Stick+fire_mace
+Scout Melee "The Fan O'War"*tf_weapon_bat+Backpack_Fan_War
+Scout Melee "Saxxy"*saxxy+Backpack_Saxxy
+Scout Melee "The Atomizer"*tf_weapon_bat+Backpack_Atomizer
+Scout Melee "Three-Rune Blade"*tf_weapon_bat+Backpack_Three-Rune_Blade
+Scout Melee "The Conscientious Objector"*saxxy+Backpack_Conscientious_Objector
+Scout Melee "Unarmed Combat"*tf_weapon_bat_fish+Backpack_Unarmed_Combat
+Scout Melee "The Wrap Assassin"*tf_weapon_bat_giftwrap+Backpack_Wrap_Assassin
+Scout Melee "Festive Bat"*tf_weapon_bat+bat_xmas
+Scout Melee "The Freedom Staff"*saxxy+Backpack_Freedom_Staff
+Scout Melee "The Bat Outta Hell"*saxxy+Backpack_Bat_Outta_Hell
+Scout Melee "The Memory Maker"*saxxy+8mm_camera
+Scout Melee "Festive Holy Mackerel"*tf_weapon_bat_fish+holymackerel_xmas
+Scout Melee "The Ham Shank"*saxxy+Backpack_Ham_Shank
+Scout Melee "Gold Frying Pan"*saxxy+Backpack_Golden_Frying_Pan
+Scout Melee "The Necro Smasher"*saxxy+Backpack_Necro_Smasher
+Scout Melee "The Crossing Guard"*saxxy+Backpack_Crossing_Guard
+Scout Melee "Batsaber"*tf_weapon_bat+Backpack_Batsaber
+Scout Melee "Prinny Machete"*saxxy+Backpack_Prinny_Machete
+Soldier Primary "Rocket Launcher"*tf_weapon_rocketlauncher+rocketlauncher
+Soldier Primary "The Direct Hit"*tf_weapon_rocketlauncher_directhit+directhit
+Soldier Primary "The Black Box"*tf_weapon_rocketlauncher+blackbox
+Soldier Primary "Rocket Jumper"*tf_weapon_rocketlauncher+rocketjumper
+Soldier Primary "The Liberty Launcher"*tf_weapon_rocketlauncher+liberty_launcher
+Soldier Primary "The Cow Mangler 5000"*tf_weapon_particle_cannon+drg_cowmangler
+Soldier Primary "The Original"*tf_weapon_rocketlauncher
+Soldier Primary "Festive Rocket Launcher"*tf_weapon_rocketlauncher+rocketlauncher_xmas
+Soldier Primary "The Beggar's Bazooka"*tf_weapon_rocketlauncher+
+Soldier Primary "Silver Botkiller Rocket Launcher Mk.I"*tf_weapon_rocketlauncher
+Soldier Primary "Gold Botkiller Rocket Launcher Mk.I"*tf_weapon_rocketlauncher
+Soldier Primary "Rust Botkiller Rocket Launcher Mk.I"*tf_weapon_rocketlauncher
+Soldier Primary "Blood Botkiller Rocket Launcher Mk.I"*tf_weapon_rocketlauncher
+Soldier Primary "Carbonado Botkiller Rocket Launcher Mk.I"*tf_weapon_rocketlauncher
+Soldier Primary "Diamond Botkiller Rocket Launcher Mk.I"*tf_weapon_rocketlauncher
+Soldier Primary "Silver Botkiller Rocket Launcher Mk.II"*tf_weapon_rocketlauncher+fob_e_rocketlauncher
+Soldier Primary "Gold Botkiller Rocket Launcher Mk.II"*tf_weapon_rocketlauncher+fob_e_rocketlauncher_gold
+Soldier Primary "Festive Black Box"*tf_weapon_rocketlauncher+blackbox_xmas
+Soldier Primary "The Air Strike"*tf_weapon_rocketlauncher_airstrike
+Soldier Primary "Woodland Warrior"*tf_weapon_rocketlauncher
+Soldier Primary "Sand Cannon"*tf_weapon_rocketlauncher
+Soldier Primary "American Pastoral"*tf_weapon_rocketlauncher
+Soldier Primary "Smalltown Bringdown"*tf_weapon_rocketlauncher
+Soldier Primary "Shell Shocker"*tf_weapon_rocketlauncher
+Soldier Primary "Aqua Marine"*tf_weapon_rocketlauncher
+Soldier Primary "Autumn"*tf_weapon_rocketlauncher
+Soldier Primary "Blue Mew"*tf_weapon_rocketlauncher
+Soldier Primary "Brain Candy"*tf_weapon_rocketlauncher
+Soldier Primary "Coffin Nail"*tf_weapon_rocketlauncher
+Soldier Primary "High Roller's"*tf_weapon_rocketlauncher
+Soldier Primary "Warhawk"*tf_weapon_rocketlauncher 
+Soldier Secondary "Soldier's Shotgun"*tf_weapon_shotgun_soldier
+Soldier Secondary "Shotgun"*tf_weapon_shotgun+shotgun
+Soldier Secondary "The Buff Banner"*tf_weapon_buff_item+buffpack
+Soldier Secondary "Gunboats"*tf_wearable+rocketboots_soldier
+Soldier Secondary "The Battalion's Backup"*tf_weapon_buff_item
+Soldier Secondary "The Concheror"*tf_weapon_buff_item
+Soldier Secondary "The Reserve Shooter"*tf_weapon_shotgun
+Soldier Secondary "The Righteous Bison"*tf_weapon_raygun+drg_righteousbison
+Soldier Secondary "The Mantreads"*tf_wearable
+Soldier Secondary "Festive Buff Banner"*tf_weapon_buff_item+buffpack_xmas
+Soldier Secondary "The B.A.S.E. Jumper"*tf_weapon_parachute
+Soldier Secondary "Festive Shotgun"*tf_weapon_shotgun+shotgun_xmas
+Soldier Secondary "Panic Attack"*tf_weapon_shotgun
+Soldier Secondary "Backwoods Boomstick"*tf_weapon_shotgun
+Soldier Secondary "Rustic Ruiner"*tf_weapon_shotgun
+Soldier Secondary "Civic Duty"*tf_weapon_shotgun
+Soldier Secondary "Lightning Rod"*tf_weapon_shotgun
+Soldier Secondary "Autumn"*tf_weapon_shotgun
+Soldier Secondary "Flower Power"*tf_weapon_shotgun
+Soldier Secondary "Coffin Nail"*tf_weapon_shotgun
+Soldier Secondary "Dressed to Kill"*tf_weapon_shotgun
+Soldier Secondary "Red Bear"*tf_weapon_shotgun
+Soldier Melee "Shovel"*tf_weapon_shovel+shovel
+Soldier Melee "The Equalizer"*tf_weapon_shovel+pickaxe_s2
+Soldier Melee "The Pain Train"*tf_weapon_shovel
+Soldier Melee "Frying Pan"*tf_weapon_shovel
+Soldier Melee "The Half-Zatoichi"*tf_weapon_katana
+Soldier Melee "The Market Gardener"*tf_weapon_shovel+gardener
+Soldier Melee "Saxxy"*saxxy+Backpack_Saxxy
+Soldier Melee "The Disciplinary Action"*tf_weapon_shovel
+Soldier Melee "The Conscientious Objector"*saxxy+Backpack_Conscientious_Objector
+Soldier Melee "The Escape Plan"*tf_weapon_shovel+pickaxe
+Soldier Melee "The Freedom Staff"*saxxy+Backpack_Freedom_Staff
+Soldier Melee "The Bat Outta Hell"*saxxy+Backpack_Bat_Outta_Hell
+Soldier Melee "The Memory Maker"*saxxy
+Soldier Melee "The Ham Shank"*saxxy+Backpack_Ham_Shank
+Soldier Melee "Gold Frying Pan"*saxxy+Backpack_Golden_Frying_Pan
+Soldier Melee "The Necro Smasher"*saxxy
+Soldier Melee "The Crossing Guard"*saxxy+Backpack_Crossing_Guard
+Soldier Melee "Prinny Machete"*saxxy+Backpack_Prinny_Machete
+Pyro Primary "Flame Thrower"*tf_weapon_flamethrower+Backpack_Flame_Thrower
+Pyro Primary "The Backburner"*tf_weapon_flamethrower+backburner
+Pyro Primary "The Degreaser"*tf_weapon_flamethrower+degreaser
+Pyro Primary "The Phlogistinator"*tf_weapon_flamethrower+drg_phlogistinator
+Pyro Primary "Festive Flame Thrower"*tf_weapon_flamethrower+flamethrower_xmas
+Pyro Primary "The Rainblower"*tf_weapon_flamethrower+rainblower
+Pyro Primary "Silver Botkiller Flame Thrower Mk.I"*tf_weapon_flamethrower+fob_h_flamethrower
+Pyro Primary "Gold Botkiller Flame Thrower Mk.I"*tf_weapon_flamethrower+botkiller_flamethrower_mk1_gold
+Pyro Primary "Rust Botkiller Flame Thrower Mk.I"*tf_weapon_flamethrower+flamethrower_rust
+Pyro Primary "Blood Botkiller Flame Thrower Mk.I"*tf_weapon_flamethrower+flamethrower_blood
+Pyro Primary "Carbonado Botkiller Flame Thrower Mk.I"*tf_weapon_flamethrower+flamethrower_rust
+Pyro Primary "Diamond Botkiller Flame Thrower Mk.I"*tf_weapon_flamethrower+flamethrower_diamond
+Pyro Primary "Silver Botkiller Flame Thrower Mk.II"*tf_weapon_flamethrower+fob_e_flamethrower
+Pyro Primary "Gold Botkiller Flame Thrower Mk.II"*tf_weapon_flamethrower+fob_e_flamethrower_gold
+Pyro Primary "Festive Backburner"*tf_weapon_flamethrower+backburner_xmas
+Pyro Primary "Dragon's Fury"*tf_weapon_rocketlauncher_fireball+flameball
+Pyro Primary "Forest Fire"*tf_weapon_flamethrower
+Pyro Primary "Barn Burner"*tf_weapon_flamethrower
+Pyro Primary "Bovine Blazemaker"*tf_weapon_flamethrower
+Pyro Primary "Earth, Sky and Fire"*tf_weapon_flamethrower
+Pyro Primary "Flash Fryer"*tf_weapon_flamethrower
+Pyro Primary "Turbine Torcher"*tf_weapon_flamethrower
+Pyro Primary "Autumn"*tf_weapon_flamethrower
+Pyro Primary "Pumpkin Patch"*tf_weapon_flamethrower
+Pyro Primary "Nutcracker"*tf_weapon_flamethrower
+Pyro Primary "Balloonicorn"*tf_weapon_flamethrower
+Pyro Primary "Rainbow"*tf_weapon_flamethrower
+Pyro Primary "Coffin Nail"*tf_weapon_flamethrower
+Pyro Primary "Warhawk"*tf_weapon_flamethrower
+Pyro Primary "Nostromo Napalmer"*tf_weapon_flamethrower
+Pyro Secondary "Pyro's Shotgun"*tf_weapon_shotgun_pyro
+Pyro Secondary "Shotgun"*tf_weapon_shotgun+shotgun
+Pyro Secondary "The Flare Gun"*tf_weapon_flaregun+flaregun_pyro
+Pyro Secondary "The Detonator"*tf_weapon_flaregun+detonator
+Pyro Secondary "The Reserve Shooter"*tf_weapon_shotgun
+Pyro Secondary "The Manmelter"*tf_weapon_flaregun_revenge+drg_manmelter
+Pyro Secondary "The Scorch Shot"*tf_weapon_flaregun
+Pyro Secondary "Festive Flare Gun"*tf_weapon_flaregun+flaregun+xms_flaregun
+Pyro Secondary "Festive Shotgun"*tf_weapon_shotgun+shotgun_xmas
+Pyro Secondary "Panic Attack"*tf_weapon_shotgun
+Pyro Secondary "Thermal Thruster"*tf_weapon_rocketpack+rocketpack
+Pyro Secondary "Gas Passer"*tf_weapon_jar_gas+gascan
+Pyro Secondary "Backwoods Boomstick"*tf_weapon_shotgun
+Pyro Secondary "Rustic Ruiner"*tf_weapon_shotgun
+Pyro Secondary "Civic Duty"*tf_weapon_shotgun
+Pyro Secondary "Lightning Rod"*tf_weapon_shotgun
+Pyro Secondary "Autumn"*tf_weapon_shotgun
+Pyro Secondary "Flower Power"*tf_weapon_shotgun
+Pyro Secondary "Coffin Nail"*tf_weapon_shotgun
+Pyro Secondary "Dressed to Kill"*tf_weapon_shotgun
+Pyro Secondary "Red Bear"*tf_weapon_shotgun 
+Pyro Melee "Fire Axe"*tf_weapon_fireaxe+fireaxe_pyro
+Pyro Melee "The Axtinguisher"*tf_weapon_fireaxe+axtinguisher_pyro
+Pyro Melee "Homewrecker"*tf_weapon_fireaxe
+Pyro Melee "The Powerjack"*tf_weapon_fireaxe
+Pyro Melee "Frying Pan"*saxxy+Backpack_Frying_Pan
+Pyro Melee "The Back Scratcher"*tf_weapon_fireaxe+back_scratcher
+Pyro Melee "Sharpened Volcano Fragment"*tf_weapon_fireaxe+fire_axe
+Pyro Melee "Saxxy"*saxxy+Backpack_Saxxy
+Pyro Melee "The Postal Pummeler"*tf_weapon_fireaxe
+Pyro Melee "The Maul"*tf_weapon_fireaxe
+Pyro Melee "The Conscientious Objector"*saxxy+Backpack_Conscientious_Objector
+Pyro Melee "The Third Degree"*tf_weapon_fireaxe+drg_thirddegree
+Pyro Melee "The Lollichop"*tf_weapon_fireaxe+lollichop
+Pyro Melee "Neon Annihilator"*tf_weapon_breakable_sign
+Pyro Melee "Neon Annihilator (Genuine)"*tf_weapon_breakable_sign
+Pyro Melee "The Freedom Staff"*saxxy+Backpack_Freedom_Staff
+Pyro Melee "The Bat Outta Hell"*saxxy+Backpack_Bat_Outta_Hell
+Pyro Melee "The Memory Maker"*saxxy
+Pyro Melee "The Festive Axtinguisher"*tf_weapon_fireaxe
+Pyro Melee "The Ham Shank"*saxxy+Backpack_Ham_Shank
+Pyro Melee "Gold Frying Pan"*saxxy+Backpack_Golden_Frying_Pan
+Pyro Melee "The Necro Smasher"*saxxy
+Pyro Melee "The Crossing Guard"*saxxy+Backpack_Crossing_Guard
+Pyro Melee "Hot Hand"*tf_weapon_slap+slapping_glove
+Pyro Melee "Prinny Machete"*saxxy+Backpack_Prinny_Machete
+Demoman Primary "Grenade Launcher"*tf_weapon_grenadelauncher+grenadelauncher
+Demoman Primary "The Loch-n-Load"*tf_weapon_grenadelauncher+lochnload
+Demoman Primary "Ali Baba's Wee Booties"*tf_wearable
+Demoman Primary "The Bootlegger"*tf_wearable
+Demoman Primary "The Loose Cannon"*tf_weapon_cannon+loose_cannon
+Demoman Primary "Festive Grenade Launcher"*tf_weapon_grenadelauncher+grenadelauncher_xmas
+Demoman Primary "The B.A.S.E. Jumper"*tf_weapon_parachute
+Demoman Primary "The Iron Bomber"*tf_weapon_grenadelauncher
+Demoman Primary "Autumn"*tf_weapon_grenadelauncher
+Demoman Primary "Macabre Web"*tf_weapon_grenadelauncher
+Demoman Primary "Rainbow"*tf_weapon_grenadelauncher
+Demoman Primary "Sweet Dreams"*tf_weapon_grenadelauncher
+Demoman Primary "Coffin Nail"*tf_weapon_grenadelauncher
+Demoman Primary "Top Shelf"*tf_weapon_grenadelauncher
+Demoman Primary "Warhawk"*tf_weapon_grenadelauncher
+Demoman Primary "Butcher Bird"*tf_weapon_grenadelauncher
+Demoman Secondary "Stickybomb Launcher"*tf_weapon_pipebomblauncher+stickybomb_launcher
+Demoman Secondary "The Scottish Resistance"*tf_weapon_pipebomblauncher+stickybomb_defender
+Demoman Secondary "The Chargin' Targe"*tf_wearable_demoshield+targe
+Demoman Secondary "Sticky Jumper"*tf_weapon_pipebomblauncher+sticky_jumper
+Demoman Secondary "The Splendid Screen"*tf_wearable_demoshield
+Demoman Secondary "Festive Stickybomb Launcher"*tf_weapon_pipebomblauncher+stickybomb_launcher_xmas
+Demoman Secondary "Silver Botkiller Stickybomb Launcher Mk.I"*tf_weapon_pipebomblauncher
+Demoman Secondary "Gold Botkiller Stickybomb Launcher Mk.I"*tf_weapon_pipebomblauncher
+Demoman Secondary "Rust Botkiller Stickybomb Launcher Mk.I"*tf_weapon_pipebomblauncher
+Demoman Secondary "Blood Botkiller Stickybomb Launcher Mk.I"*tf_weapon_pipebomblauncher
+Demoman Secondary "Carbonado Botkiller Stickybomb Launcher Mk.I"*tf_weapon_pipebomblauncher
+Demoman Secondary "Diamond Botkiller Stickybomb Launcher Mk.I"*tf_weapon_pipebomblauncher
+Demoman Secondary "Silver Botkiller Stickybomb Launcher Mk.II"*tf_weapon_pipebomblauncher+botkillere_stickybomb
+Demoman Secondary "Gold Botkiller Stickybomb Launcher Mk.II"*tf_weapon_pipebomblauncher+botkillere_stickybomb_gold
+Demoman Secondary "The Tide Turner"*tf_wearable_demoshield
+Demoman Secondary "Festive Targe"*tf_wearable_demoshield+targe_xmas
+Demoman Secondary "The Quickiebomb Launcher"*tf_weapon_pipebomblauncher
+Demoman Secondary "Sudden Flurry"*tf_weapon_pipebomblauncher
+Demoman Secondary "Carpet Bomber"*tf_weapon_pipebomblauncher
+Demoman Secondary "Blasted Bombardier"*tf_weapon_pipebomblauncher
+Demoman Secondary "Rooftop Wrangler"*tf_weapon_pipebomblauncher
+Demoman Secondary "Liquid Asset"*tf_weapon_pipebomblauncher
+Demoman Secondary "Pink Elephant"*tf_weapon_pipebomblauncher
+Demoman Secondary "Autumn"*tf_weapon_pipebomblauncher
+Demoman Secondary "Pumpkin Patch"*tf_weapon_pipebomblauncher
+Demoman Secondary "Macabre Web"*tf_weapon_pipebomblauncher
+Demoman Secondary "Sweet Dreams"*tf_weapon_pipebomblauncher
+Demoman Secondary "Coffin Nail"*tf_weapon_pipebomblauncher
+Demoman Secondary "Dressed to Kill"*tf_weapon_pipebomblauncher
+Demoman Secondary "Blitzkrieg"*tf_weapon_pipebomblauncher
+Demoman Melee "Bottle"*tf_weapon_bottle+bottle
+Demoman Melee "The Eyelander"*tf_weapon_sword
+Demoman Melee "The Pain Train"*tf_weapon_shovel
+Demoman Melee "The Scotsman's Skullcutter"*tf_weapon_sword+battleaxe
+Demoman Melee "Frying Pan"*saxxy+Backpack_Frying_Pan
+Demoman Melee "Horseless Headless Horsemann's Headtaker"*tf_weapon_sword+headtaker
+Demoman Melee "Ullapool Caber"*tf_weapon_stickbomb+caber
+Demoman Melee "The Claidheamh Mòr"*tf_weapon_sword
+Demoman Melee "The Half-Zatoichi"*tf_weapon_katana
+Demoman Melee "The Persian Persuader"*tf_weapon_sword
+Demoman Melee "Saxxy"*saxxy+Backpack_Saxxy
+Demoman Melee "The Conscientious Objector"*saxxy+Backpack_Conscientious_Objector
+Demoman Melee "Nessie's Nine Iron"*tf_weapon_sword+golfclub
+Demoman Melee "The Scottish Handshake"*tf_weapon_bottle
+Demoman Melee "The Freedom Staff"*saxxy+Backpack_Freedom_Staff
+Demoman Melee "The Bat Outta Hell"*saxxy+Backpack_Bat_Outta_Hell
+Demoman Melee "The Memory Maker"*saxxy
+Demoman Melee "The Ham Shank"*saxxy+Backpack_Ham_Shank
+Demoman Melee "Gold Frying Pan"*saxxy+Backpack_Golden_Frying_Pan
+Demoman Melee "Festive Eyelander"*tf_weapon_sword
+Demoman Melee "The Necro Smasher"*saxxy
+Demoman Melee "The Crossing Guard"*saxxy+Backpack_Crossing_Guard
+Demoman Melee "Prinny Machete"*saxxy+Backpack_Prinny_Machete
+Heavy Primary "Minigun"*tf_weapon_minigun
+Heavy Primary "Minigun"*tf_weapon_minigun
+Heavy Primary "Natascha"*tf_weapon_minigun+natasha
+Heavy Primary "Iron Curtain"*tf_weapon_minigun+curtain
+Heavy Primary "The Brass Beast"*tf_weapon_minigun+gatling_gun
+Heavy Primary "Tomislav"*tf_weapon_minigun
+Heavy Primary "Festive Minigun"*tf_weapon_minigun+minigun_xmas
+Heavy Primary "Silver Botkiller Minigun Mk.I"*tf_weapon_minigun
+Heavy Primary "Gold Botkiller Minigun Mk.I"*tf_weapon_minigun
+Heavy Primary "The Huo-Long Heater"*tf_weapon_minigun
+Heavy Primary "The Huo-Long Heater (Genuine)"*tf_weapon_minigun
+Heavy Primary "Deflector (MvM only?)"*tf_weapon_minigun
+Heavy Primary "Rust Botkiller Minigun Mk.I"*tf_weapon_minigun
+Heavy Primary "Blood Botkiller Minigun Mk.I"*tf_weapon_minigun
+Heavy Primary "Carbonado Botkiller Minigun Mk.I"*tf_weapon_minigun
+Heavy Primary "Diamond Botkiller Minigun Mk.I"*tf_weapon_minigun
+Heavy Primary "Silver Botkiller Minigun Mk.II"*tf_weapon_minigun+fob_e_minigun
+Heavy Primary "Gold Botkiller Minigun Mk.II"*tf_weapon_minigun+fob_e_minigun_gold
+Heavy Primary "King of the Jungle"*tf_weapon_minigun
+Heavy Primary "Iron Wood"*tf_weapon_minigun
+Heavy Primary "Antique Annihilator"*tf_weapon_minigun
+Heavy Primary "War Room"*tf_weapon_minigun
+Heavy Primary "Citizen Pain"*tf_weapon_minigun
+Heavy Primary "Brick House"*tf_weapon_minigun
+Heavy Primary "Macabre Web"*tf_weapon_minigun
+Heavy Primary "Pumpkin Patch"*tf_weapon_minigun
+Heavy Primary "Nutcracker"*tf_weapon_minigun
+Heavy Primary "Brain Candy"*tf_weapon_minigun
+Heavy Primary "Mister Cuddles"*tf_weapon_minigun
+Heavy Primary "Coffin Nail"*tf_weapon_minigun
+Heavy Primary "Dressed to Kill"*tf_weapon_minigun
+Heavy Primary "Top Shelf"*tf_weapon_minigun
+Heavy Primary "Butcher Bird"*tf_weapon_minigun
+Heavy Secondary "Heavy's Shotgun"*tf_weapon_shotgun_hwg
+Heavy Secondary "Shotgun"*tf_weapon_shotgun+shotgun
+Heavy Secondary "Sandvich"*tf_weapon_lunchbox+sandwich
+Heavy Secondary "The Dalokohs Bar"*tf_weapon_lunchbox
+Heavy Secondary "The Buffalo Steak Sandvich"*tf_weapon_lunchbox
+Heavy Secondary "The Family Business"*tf_weapon_shotgun_hwg
+Heavy Secondary "Fishcake"*tf_weapon_lunchbox
+Heavy Secondary "Robo-Sandvich"*tf_weapon_lunchbox+robo_sandwich
+Heavy Secondary "Festive Sandvich"*tf_weapon_lunchbox+sandwich_xmas
+Heavy Secondary "Festive Shotgun"*tf_weapon_shotgun+shotgun_xmas
+Heavy Secondary "Panic Attack"*tf_weapon_shotgun
+Heavy Secondary "Second Banana"*tf_weapon_lunchbox+banana
+Heavy Secondary "Backwoods Boomstick"*tf_weapon_shotgun
+Heavy Secondary "Rustic Ruiner"*tf_weapon_shotgun
+Heavy Secondary "Civic Duty"*tf_weapon_shotgun
+Heavy Secondary "Lightning Rod"*tf_weapon_shotgun
+Heavy Secondary "Autumn"*tf_weapon_shotgun
+Heavy Secondary "Flower Power"*tf_weapon_shotgun
+Heavy Secondary "Coffin Nail"*tf_weapon_shotgun
+Heavy Secondary "Dressed to Kill"*tf_weapon_shotgun
+Heavy Secondary "Red Bear"*tf_weapon_shotgun
+Heavy Melee "Fists"*tf_weapon_fists
+Heavy Melee "Fists"*tf_weapon_fists
+Heavy Melee "The Killing Gloves of Boxing"*tf_weapon_fists+boxing_gloves
+Heavy Melee "Gloves of Running Urgently"*tf_weapon_fists+boxing_gloves_urgency
+Heavy Melee "Frying Pan"*saxxy+Backpack_Frying_Pan
+Heavy Melee "Warrior's Spirit"*tf_weapon_fists
+Heavy Melee "Fists of Steel"*tf_weapon_fists
+Heavy Melee "Saxxy"*saxxy+Backpack_Saxxy
+Heavy Melee "The Eviction Notice"*tf_weapon_fists
+Heavy Melee "The Conscientious Objector"*saxxy+Backpack_Conscientious_Objector
+Heavy Melee "Apoco-Fists"*tf_weapon_fists
+Heavy Melee "The Holiday Punch"*tf_weapon_fists
+Heavy Melee "The Freedom Staff"*saxxy+Backpack_Freedom_Staff
+Heavy Melee "The Bat Outta Hell"*saxxy+Backpack_Bat_Outta_Hell
+Heavy Melee "The Memory Maker"*saxxy
+Heavy Melee "The Ham Shank"*saxxy+Backpack_Ham_Shank
+Heavy Melee "Gold Frying Pan"*saxxy+Backpack_Golden_Frying_Pan
+Heavy Melee "Festive Gloves of Running Urgently (G.R.U.)"*tf_weapon_fists+boxing_gloves_xmas
+Heavy Melee "The Bread Bite"*tf_weapon_fists+breadmonster_gloves
+Heavy Melee "The Necro Smasher"*saxxy
+Heavy Melee "The Crossing Guard"*saxxy+Backpack_Crossing_Guard
+Heavy Melee "Gloves of Running Urgently MvM"*tf_weapon_fists+boxing_gloves_urgency
+Heavy Melee "Prinny Machete"*saxxy+Backpack_Prinny_Machete 
+Engineer Primary "Engineer's Shotgun"*tf_weapon_shotgun_primary
+Engineer Primary "Shotgun (Renamed/Str"ange)*tf_weapon_shotgun
+Engineer Primary "The Frontier Justice"*tf_weapon_sentry_revenge+frontierjustice
+Engineer Primary "The Widowmaker"*tf_weapon_shotgun_primary
+Engineer Primary "The Pomson 6000"*tf_weapon_drg_pomson+drg_pomson
+Engineer Primary "The Rescue Ranger"*tf_weapon_shotgun_building_rescue
+Engineer Primary "Festive Frontier Jus"tice*tf_weapon_sentry_revenge+frontierjustice_xmas
+Engineer Primary "Festive Shotgun"*tf_weapon_shotgun+shotgun_xmas
+Engineer Primary "Panic Attack"*tf_weapon_shotgun
+Engineer Primary "Backwoods Boomstick"*tf_weapon_shotgun
+Engineer Primary "Rustic Ruiner"*tf_weapon_shotgun
+Engineer Primary "Civic Duty"*tf_weapon_shotgun
+Engineer Primary "Lightning Rod"*tf_weapon_shotgun
+Engineer Primary "Autumn"*tf_weapon_shotgun
+Engineer Primary "Flower Power"*tf_weapon_shotgun
+Engineer Primary "Coffin Nail"*tf_weapon_shotgun
+Engineer Primary "Dressed to Kill"*tf_weapon_shotgun
+Engineer Primary "Red Bear"*tf_weapon_shotgun
+Engineer Secondary "Engineer's Pistol"*tf_weapon_pistol+pistol
+Engineer Secondary "Pistol"*tf_weapon_pistol+pistol
+Engineer Secondary "The Wrangler"*tf_weapon_laser_pointer+wrangler
+Engineer Secondary "Vintage Lugermorph"*tf_weapon_pistol+Backpack_Lugermorph
+Engineer Secondary "Lugermorph"*tf_weapon_pistol+Backpack_Lugermorph
+Engineer Secondary "The Short Circuit"*tf_weapon_mechanical_arm
+Engineer Secondary "Festive Wrangler"*tf_weapon_laser_pointer+wrangler_xmas
+Engineer Secondary "Red Rock Roscoe"*tf_weapon_pistol
+Engineer Secondary "Homemade Heater"*tf_weapon_pistol
+Engineer Secondary "Hickory Holepuncher"*tf_weapon_pistol
+Engineer Secondary "Local Hero"*tf_weapon_pistol
+Engineer Secondary "Black Dahlia"*tf_weapon_pistol
+Engineer Secondary "Sandstone Special"*tf_weapon_pistol
+Engineer Secondary "Macabre Web"*tf_weapon_pistol
+Engineer Secondary "Nutcracker"*tf_weapon_pistol
+Engineer Secondary "Blue Mew"*tf_weapon_pistol
+Engineer Secondary "Brain Candy"*tf_weapon_pistol
+Engineer Secondary "Shot to Hell"*tf_weapon_pistol
+Engineer Secondary "Dressed To Kill"*tf_weapon_pistol
+Engineer Secondary "Blitzkrieg"*tf_weapon_pistol
+Engineer Secondary "The C.A.P.P.E.R."*tf_weapon_pistol+Backpack_C.A.P.P.E.R
+Engineer Secondary "The Gigar Counter"*tf_weapon_laser_pointer
+Engineer Melee "Wrench"*tf_weapon_wrench+wrench
+Engineer Melee "The Gunslinger"*tf_weapon_robot_arm+gunslinger
+Engineer Melee "The Southern Hospitality"*tf_weapon_wrench
+Engineer Melee "Golden Wrench"*tf_weapon_wrench+wrench_gold
+Engineer Melee "The Jag"*tf_weapon_wrench+jag
+Engineer Melee "Saxxy"*saxxy+Backpack_Saxxy
+Engineer Melee "The Eureka Effect"*tf_weapon_wrench+drg_wrenchmotron
+Engineer Melee "Festive Wrench"*tf_weapon_wrench+wrench_xmas
+Engineer Melee "Silver Botkiller Wrench Mk.I"*tf_weapon_wrench+fob_h_wrench
+Engineer Melee "Gold Botkiller Wrench Mk.I"*tf_weapon_wrench+fob_h_wrench_gold
+Engineer Melee "Rust Botkiller Wrench Mk.I"*tf_weapon_wrench+wrench_rust
+Engineer Melee "Blood Botkiller Wrench Mk.I"*tf_weapon_wrench+wrench_blood
+Engineer Melee "Carbonado Botkiller Wrench Mk.I"*tf_weapon_wrench
+Engineer Melee "Diamond Botkiller Wrench Mk.I"*tf_weapon_wrench+wrench_diamond
+Engineer Melee "Diamond Black Botkiller Wrench Mk.I"*tf_weapon_wrench+wrench_diamond_black
+Engineer Melee "Silver Botkiller Wrench Mk.II"*tf_weapon_wrench
+Engineer Melee "Gold Botkiller Wrench Mk.II"*tf_weapon_wrench
+Engineer Melee "Gold Frying Pan"*saxxy+Backpack_Golden_Frying_Pan
+Engineer Melee "The Necro Smasher"*saxxy
+Engineer Melee "Nutcracker"*tf_weapon_wrench
+Engineer Melee "Autumn"*tf_weapon_wrench
+Engineer Melee "Boneyard"*tf_weapon_wrench
+Engineer Melee "Dressed to Kill"*tf_weapon_wrench
+Engineer Melee "Top Shelf"*tf_weapon_wrench
+Engineer Melee "Torqued to Hell"*tf_weapon_wrench
+Engineer Melee "Airwolf"*tf_weapon_wrench
+Engineer Melee "Prinny Machete"*saxxy+Backpack_Prinny_Machete
+Engineer PDA "Construction PDA"*tf_weapon_pda_engineer_build+builder
+Engineer PDA "Construction PDA"*tf_weapon_pda_engineer_build+builder
+Engineer PDA "Destruction PDA"*tf_weapon_pda_engineer_destroy+pda_engineer
+Medic Primary "Syringe Gun"*tf_weapon_syringegun_medic+syringegun
+Medic Primary "The Blutsauger"*tf_weapon_syringegun_medic+bloodsiger
+Medic Primary "Crusader's Crossbow"*tf_weapon_crossbow
+Medic Primary "The Overdose"*tf_weapon_syringegun_medic+overdose
+Medic Primary "Festive Crusader's Crossbow"*tf_weapon_crossbow
+Medic Secondary "Medi Gun"*tf_weapon_medigun+w_medigun
+Medic Secondary "The Kritzkrieg"*tf_weapon_medigun+overhealer
+Medic Secondary "The Quick-Fix"*tf_weapon_medigun+proto_medigun
+Medic Secondary "Festive Medi Gun"*tf_weapon_medigun
+Medic Secondary "Silver Botkiller Medi Gun Mk.I"*tf_weapon_medigun
+Medic Secondary "Gold Botkiller Medi Gun Mk.I"*tf_weapon_medigun
+Medic Secondary "Rust Botkiller Medi Gun Mk.I"*tf_weapon_medigun
+Medic Secondary "Blood Botkiller Medi Gun Mk.I"*tf_weapon_medigun
+Medic Secondary "Carbonado Botkiller Medi Gun Mk.I"*tf_weapon_medigun
+Medic Secondary "Diamond Botkiller Medi Gun Mk.I"*tf_weapon_medigun
+Medic Secondary "Silver Botkiller Medi Gun Mk.II"*tf_weapon_medigun+fob_h_medigun
+Medic Secondary "Gold Botkiller Medi Gun Mk.II"*tf_weapon_medigun+fob_h_medigun_gold
+Medic Secondary "The Vaccinator"*tf_weapon_medigun
+Medic Secondary "Masked Mender"*tf_weapon_medigun
+Medic Secondary "Wrapped Reviver"*tf_weapon_medigun
+Medic Secondary "Reclaimed Reanimator"*tf_weapon_medigun
+Medic Secondary "Civil Servant"*tf_weapon_medigun
+Medic Secondary "Spark of Life"*tf_weapon_medigun
+Medic Secondary "Wildwood"*tf_weapon_medigun
+Medic Secondary "Flower Power"*tf_weapon_medigun
+Medic Secondary "Dressed To Kill"*tf_weapon_medigun
+Medic Secondary "High Roller's"*tf_weapon_medigun
+Medic Secondary "Coffin Nail"*tf_weapon_medigun
+Medic Secondary "Blitzkrieg"*tf_weapon_medigun
+Medic Secondary "Corsair"*tf_weapon_medigun
+Medic Melee "Bonesaw"*tf_weapon_bonesaw+bonesaw
+Medic Melee "The Ubersaw"*tf_weapon_bonesaw+ubersaw
+Medic Melee "The Vita-Saw"*tf_weapon_bonesaw+uberneedle
+Medic Melee "Frying Pan"*saxxy+Backpack_Frying_Pan
+Medic Melee "Amputator"*tf_weapon_bonesaw+amputator
+Medic Melee "The Solemn Vow"*tf_weapon_bonesaw+hippocrates_bust
+Medic Melee "Saxxy"*saxxy+Backpack_Saxxy
+Medic Melee "The Conscientious Objector"*saxxy+Backpack_Conscientious_Objector
+Medic Melee "The Freedom Staff"*saxxy+Backpack_Freedom_Staff
+Medic Melee "The Bat Outta Hell"*saxxy+Backpack_Bat_Outta_Hell
+Medic Melee "The Memory Maker"*saxxy
+Medic Melee "Festive Ubersaw"*tf_weapon_bonesaw+ubersaw_xmas
+Medic Melee "The Ham Shank"*saxxy+Backpack_Ham_Shank
+Medic Melee "Gold Frying Pan"*saxxy+Backpack_Golden_Frying_Pan
+Medic Melee "The Necro Smasher"*saxxy
+Medic Melee "The Crossing Guard"*saxxy+Backpack_Crossing_Guard
+Medic Melee "Festive Bonesaw"*tf_weapon_bonesaw+bonesaw_xmas
+Medic Melee "Prinny Machete"*saxxy+Backpack_Prinny_Machete
+Sniper Primary "Sniper Rifle"*tf_weapon_sniperrifle+sniperrifle
+Sniper Primary "The Huntsman"*tf_weapon_compound_bow+bow
+Sniper Primary "The Sydney Sleeper"*tf_weapon_sniperrifle
+Sniper Primary "The Bazaar Bargain"*tf_weapon_sniperrifle_decap+bazaar_sniper
+Sniper Primary "The Machina"*tf_weapon_sniperrifle
+Sniper Primary "Festive Sniper Rifle"*tf_weapon_sniperrifle+sniperrifle_xmas
+Sniper Primary "The Hitman's Heatmaker"*tf_weapon_sniperrifle
+Sniper Primary "Silver Botkiller Sniper Rifle Mk.I"*tf_weapon_sniperrifle
+Sniper Primary "Gold Botkiller Sniper Rifle Mk.I"*tf_weapon_sniperrifle
+Sniper Primary "The AWPer Hand"*tf_weapon_sniperrifle+awp
+Sniper Primary "Rust Botkiller Sniper Rifle Mk.I"*tf_weapon_sniperrifle
+Sniper Primary "Blood Botkiller Sniper Rifle Mk.I"*tf_weapon_sniperrifle
+Sniper Primary "Carbonado Botkiller Sniper Rifle Mk.I"*tf_weapon_sniperrifle
+Sniper Primary "Diamond Botkiller Sniper Rifle Mk.I"*tf_weapon_sniperrifle
+Sniper Primary "Silver Botkiller Sniper Rifle Mk.II"*tf_weapon_sniperrifle+fob_e_sniperrifle
+Sniper Primary "Gold Botkiller Sniper Rifle Mk.II"*tf_weapon_sniperrifle+fob_e_sniperrifle_gold
+Sniper Primary "Festive Huntsman"*tf_weapon_compound_bow+bow_xmas
+Sniper Primary "The Fortified Compound"*tf_weapon_compound_bow
+Sniper Primary "The Classic"*tf_weapon_sniperrifle_classic+tfc_sniperrifle
+Sniper Primary "Night Owl"*tf_weapon_sniperrifle
+Sniper Primary "Purple Range"*tf_weapon_sniperrifle
+Sniper Primary "Lumber From Down Under"*tf_weapon_sniperrifle
+Sniper Primary "Shot in the Dark"*tf_weapon_sniperrifle
+Sniper Primary "Bogtrotter"*tf_weapon_sniperrifle
+Sniper Primary "Thunderbolt"*tf_weapon_sniperrifle
+Sniper Primary "Pumpkin Patch"*tf_weapon_sniperrifle
+Sniper Primary "Boneyard"*tf_weapon_sniperrifle
+Sniper Primary "Wildwood"*tf_weapon_sniperrifle
+Sniper Primary "Balloonicorn"*tf_weapon_sniperrifle
+Sniper Primary "Rainbow"*tf_weapon_sniperrifle
+Sniper Primary "Coffin Nail"*tf_weapon_sniperrifle
+Sniper Primary "Dressed to Kill"*tf_weapon_sniperrifle
+Sniper Primary "Airwolf"*tf_weapon_sniperrifle
+Sniper Primary "Shooting Star"*tf_weapon_sniperrifle 
+Sniper Secondary "SMG"*tf_weapon_smg+smg
+Sniper Secondary "The Razorback"*tf_wearable_razorback
+Sniper Secondary "Jarate"*tf_weapon_jar+urinejar
+Sniper Secondary "Darwin's Danger Shield"*tf_wearable
+Sniper Secondary "Cozy Camper"*tf_wearable
+Sniper Secondary "The Cleaner's Carbine"*tf_weapon_charged_smg
+Sniper Secondary "Festive Jarate"*tf_weapon_jar+xms_urinejar
+Sniper Secondary "The Self-Aware Beauty Mark"*tf_weapon_jar+breadmonster
+Sniper Secondary "Festive SMG"*tf_weapon_smg+smg_xmas
+Sniper Secondary "Woodsy Widowmaker"*tf_weapon_smg
+Sniper Secondary "Plaid Potshotter"*tf_weapon_smg
+Sniper Secondary "Treadplate Tormenter"*tf_weapon_smg
+Sniper Secondary "Team Sprayer"*tf_weapon_smg
+Sniper Secondary "Low Profile"*tf_weapon_smg
+Sniper Secondary "Wildwood"*tf_weapon_smg
+Sniper Secondary "Blue Mew"*tf_weapon_smg
+Sniper Secondary "High Roller's"*tf_weapon_smg
+Sniper Secondary "Blitzkrieg"*tf_weapon_smg
+Sniper Melee "Kukri"*tf_weapon_club+machete
+Sniper Melee "The Tribalman's Shiv"*tf_weapon_club+wood_machete
+Sniper Melee "The Bushwacka"*tf_weapon_club
+Sniper Melee "Frying Pan"*saxxy+Backpack_Frying_Pan
+Sniper Melee "The Shahanshah"*tf_weapon_club
+Sniper Melee "Saxxy"*saxxy+Backpack_Saxxy
+Sniper Melee "The Conscientious Objector"*saxxy+Backpack_Conscientious_Objector
+Sniper Melee "The Freedom Staff"*saxxy+Backpack_Freedom_Staff
+Sniper Melee "The Bat Outta Hell"*saxxy+Backpack_Bat_Outta_Hell
+Sniper Melee "The Memory Maker"*saxxy
+Sniper Melee "The Ham Shank"*saxxy+Backpack_Ham_Shank
+Sniper Melee "Gold Frying Pan"*saxxy+Backpack_Golden_Frying_Pan
+Sniper Melee "The Necro Smasher"*saxxy
+Sniper Melee "The Crossing Guard"*saxxy+Backpack_Crossing_Guard
+Sniper Melee "Prinny Machete"*saxxy+Backpack_Prinny_Machete 
+Spy Primary "Revolver"*tf_weapon_revolver+revolver
+Spy Primary "The Ambassador"*tf_weapon_revolver+ambassador_opt
+Spy Primary "Big Kill"*tf_weapon_revolver
+Spy Primary "L'Etranger"*tf_weapon_revolver+letranger
+Spy Primary "The Enforcer"*tf_weapon_revolver
+Spy Primary "The Diamondback"*tf_weapon_revolver
+Spy Primary "Festive Ambassador"*tf_weapon_revolver+ambassador_xmas
+Spy Primary "Festive Revolver"*tf_weapon_revolver+revolver_xmas
+Spy Primary "Psychedelic Slugger"*tf_weapon_revolver
+Spy Primary "Old Country"*tf_weapon_revolver
+Spy Primary "Mayor"*tf_weapon_revolver
+Spy Primary "Dead Reckoner"*tf_weapon_revolver
+Spy Primary "Boneyard"*tf_weapon_revolver
+Spy Primary "Wildwood"*tf_weapon_revolver
+Spy Primary "Macabre Web"*tf_weapon_revolver
+Spy Primary "Flower Power"*tf_weapon_revolver
+Spy Primary "Top Shelf"*tf_weapon_revolver
+Spy Primary "Coffin Nail"*tf_weapon_revolver
+Spy Primary "Blitzkrieg"*tf_weapon_revolver
+Spy PDA "Sapper"*tf_weapon_builder+sapper
+Spy PDA "The Red-Tape Recorder"*tf_weapon_sapper
+Spy PDA "The Red-Tape Recorder (Genuine)"*tf_weapon_sapper
+Spy PDA "The Ap-Sap (Genuine)"*tf_weapon_sapper+p2rec
+Spy PDA "Festive Sapper"*tf_weapon_sapper+sapper_xmas
+Spy PDA "The Snack Attack"*tf_weapon_sapper+breadmonster_sapper
+Spy Melee "Knife"*tf_weapon_knife+knife
+Spy Melee "Your Eternal Reward"*tf_weapon_knife+eternal_reward
+Spy Melee "Conniver's Kunai"*tf_weapon_knife
+Spy Melee "Saxxy"*saxxy+Backpack_Saxxy
+Spy Melee "The Big Earner"*tf_weapon_knife
+Spy Melee "The Wanga Prick"*tf_weapon_knife+voodoo_pin
+Spy Melee "The Sharp Dresser"*tf_weapon_knife+acr_hookblade
+Spy Melee "The Spy-cicle"*tf_weapon_knife
+Spy Melee "Festive Knife"*tf_weapon_knife+knife_xmas
+Spy Melee "The Black Rose"*tf_weapon_knife+ava_roseknife_v
+Spy Melee "Silver Botkiller Knife Mk.I"*tf_weapon_knife
+Spy Melee "Gold Botkiller Knife Mk.I"*tf_weapon_knife
+Spy Melee "Rust Botkiller Knife Mk.I"*tf_weapon_knife+knife_rust
+Spy Melee "Blood Botkiller Knife Mk.I"*tf_weapon_knife+knife_blood
+Spy Melee "Carbonado Botkiller Knife Mk.I"*tf_weapon_knife
+Spy Melee "Diamond Botkiller Knife Mk.I"*tf_weapon_knife+knife_diamond
+Spy Melee "Diamond Black Botkiller Knife Mk.I"*tf_weapon_knife+knife_diamond_black
+Spy Melee "Silver Botkiller Knife Mk.II"*tf_weapon_knife+knife_botkiller_mk2
+Spy Melee "Gold Botkiller Knife Mk.II"*tf_weapon_knife+knife_botkiller_mk2_gold
+Spy Melee "Gold Frying Pan"*saxxy+Backpack_Golden_Frying_Pan
+Spy Melee "Boneyard"*tf_weapon_knife
+Spy Melee "Blue Mew"*tf_weapon_knife
+Spy Melee "Brain Candy"*tf_weapon_knife
+Spy Melee "Stabbed to Hell"*tf_weapon_knife
+Spy Melee "Dressed to Kill"*tf_weapon_knife
+Spy Melee "Top Shelf"*tf_weapon_knife
+Spy Melee "Blitzkrieg"*tf_weapon_knife
+Spy Melee "Airwolf"*tf_weapon_knife
+Spy Melee "Prinny Machete"*saxxy+Backpack_Prinny_Machete
+Spy Clock "Invis Watch"*tf_weapon_invis+spy_watch
+Spy Clock "The Dead Ringer"*tf_weapon_invis+pocket_watch
+Spy Clock "The Cloak and Dagger"*tf_weapon_invis+leather_watch
+Spy Clock "Enthusiast's Timepiece"*tf_weapon_invis+ttg_watch
+Spy Clock "The Quackenbirdt"*tf_weapon_invis 
