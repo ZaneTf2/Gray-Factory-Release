@@ -3,7 +3,7 @@ from typing import Dict, List, Optional
 from pathlib import Path
 from PIL import Image
 
-from vtf2img_lib.parser_1 import Parser as VTFParser
+from vtf2img_lib.parser import Parser as VTFParser
 from .exceptions import VPKError
 
 class TextureManager:

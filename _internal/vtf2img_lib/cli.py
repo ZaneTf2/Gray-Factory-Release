@@ -2,7 +2,7 @@
 
 import argparse
 
-from vtf2img.parser import Parser
+from .parser import Parser
 
 
 def main():

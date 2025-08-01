@@ -1605,16 +1605,6 @@ Cosmetic = {
         "mouse_pressed_sound": "ui/item_hat_pickup.wav",
         "drop_sound": "ui/item_hat_drop.wav"
     },
-    "The Black Box": {
-        "Name": "The Black Box",
-        "Rome": False,
-        "Halloween": False,
-        "Class": "AllClass",
-        "Id": "AllClass",
-        "Icon": "None",
-        "mouse_pressed_sound": "ui/item_light_gun_pickup.wav",
-        "drop_sound": "ui/item_light_gun_drop.wav"
-    },
     "Ol' Snaggletooth": {
         "Name": "Ol' Snaggletooth",
         "Rome": False,
@@ -8585,18 +8575,6 @@ Cosmetic = {
         "mouse_pressed_sound": "ui/item_pack_pickup.wav",
         "drop_sound": "ui/item_pack_drop.wav"
     },
-    "The Robo-Sandvich": {
-        "Name": "The Robo-Sandvich",
-        "Rome": False,
-        "Halloween": False,
-        "Class": [
-            "Heavy"
-        ],
-        "Id": "AllClass",
-        "Icon": "backpack/weapons/c_models/c_sandwich/c_robo_sandwich",
-        "mouse_pressed_sound": "ui/item_metal_weapon_pickup.wav",
-        "drop_sound": "ui/item_metal_weapon_drop.wav"
-    },
     "The Friends Forever Companion Square Badge": {
         "Name": "The Friends Forever Companion Square Badge",
         "Rome": False,
@@ -10336,128 +10314,6 @@ Cosmetic = {
         "mouse_pressed_sound": "ui/item_mtp_pickup.wav",
         "drop_sound": "ui/item_mtp_drop.wav"
     },
-    "The Loose Cannon": {
-        "Name": "The Loose Cannon",
-        "Rome": False,
-        "Halloween": False,
-        "Class": "AllClass",
-        "Id": "AllClass",
-        "Icon": "None",
-        "mouse_pressed_sound": "ui/item_light_gun_pickup.wav",
-        "drop_sound": "ui/item_light_gun_drop.wav"
-    },
-    "The Rescue Ranger": {
-        "Name": "The Rescue Ranger",
-        "Rome": False,
-        "Halloween": False,
-        "Class": "AllClass",
-        "Id": "AllClass",
-        "Icon": "None",
-        "mouse_pressed_sound": "ui/item_light_gun_pickup.wav",
-        "drop_sound": "ui/item_light_gun_drop.wav"
-    },
-    "The Vaccinator": {
-        "Name": "The Vaccinator",
-        "Rome": False,
-        "Halloween": False,
-        "Class": [
-            "Medic"
-        ],
-        "Id": "AllClass",
-        "Icon": "backpack/workshop/weapons/c_models/c_medigun_defense/c_medigun_defense",
-        "mouse_pressed_sound": "ui/item_heavy_gun_pickup.wav",
-        "drop_sound": "ui/item_heavy_gun_drop.wav"
-    },
-    "Festive Holy Mackerel": {
-        "Name": "Festive Holy Mackerel",
-        "Rome": False,
-        "Halloween": False,
-        "Class": "AllClass",
-        "Id": "AllClass",
-        "Icon": "backpack/workshop/weapons/c_models/c_holymackerel/c_holymackerel_xmas",
-        "mouse_pressed_sound": "ui/item_light_gun_pickup.wav",
-        "drop_sound": "ui/item_light_gun_drop.wav"
-    },
-    "Festive Axtinguisher": {
-        "Name": "Festive Axtinguisher",
-        "Rome": False,
-        "Halloween": False,
-        "Class": "AllClass",
-        "Id": "AllClass",
-        "Icon": "backpack/weapons/c_models/c_fireaxe_pyro/c_fireaxe_pyro_xmas",
-        "mouse_pressed_sound": "ui/item_light_gun_pickup.wav",
-        "drop_sound": "ui/item_light_gun_drop.wav"
-    },
-    "Festive Buff Banner": {
-        "Name": "Festive Buff Banner",
-        "Rome": False,
-        "Halloween": False,
-        "Class": "AllClass",
-        "Id": "AllClass",
-        "Icon": "backpack/weapons/c_models/c_buffpack/c_buffpack_xmas",
-        "mouse_pressed_sound": "ui/item_light_gun_pickup.wav",
-        "drop_sound": "ui/item_light_gun_drop.wav"
-    },
-    "Festive Sandvich": {
-        "Name": "Festive Sandvich",
-        "Rome": False,
-        "Halloween": False,
-        "Class": "AllClass",
-        "Id": "AllClass",
-        "Icon": "backpack/weapons/c_models/c_sandwich/c_sandwich_xmas",
-        "mouse_pressed_sound": "ui/item_light_gun_pickup.wav",
-        "drop_sound": "ui/item_light_gun_drop.wav"
-    },
-    "Festive Ubersaw": {
-        "Name": "Festive Ubersaw",
-        "Rome": False,
-        "Halloween": False,
-        "Class": "AllClass",
-        "Id": "AllClass",
-        "Icon": "backpack/weapons/c_models/c_ubersaw/c_ubersaw_xmas",
-        "mouse_pressed_sound": "ui/item_light_gun_pickup.wav",
-        "drop_sound": "ui/item_light_gun_drop.wav"
-    },
-    "Festive Frontier Justice": {
-        "Name": "Festive Frontier Justice",
-        "Rome": False,
-        "Halloween": False,
-        "Class": "AllClass",
-        "Id": "AllClass",
-        "Icon": "backpack/weapons/c_models/c_frontierjustice/c_frontierjustice_xmas",
-        "mouse_pressed_sound": "ui/item_light_gun_pickup.wav",
-        "drop_sound": "ui/item_light_gun_drop.wav"
-    },
-    "Festive Huntsman": {
-        "Name": "Festive Huntsman",
-        "Rome": False,
-        "Halloween": False,
-        "Class": "AllClass",
-        "Id": "AllClass",
-        "Icon": "backpack/weapons/c_models/c_bow/c_bow_xmas",
-        "mouse_pressed_sound": "ui/item_light_gun_pickup.wav",
-        "drop_sound": "ui/item_light_gun_drop.wav"
-    },
-    "Festive Ambassador": {
-        "Name": "Festive Ambassador",
-        "Rome": False,
-        "Halloween": False,
-        "Class": "AllClass",
-        "Id": "AllClass",
-        "Icon": "backpack/weapons/c_models/c_ambassador/c_ambassador_xmas",
-        "mouse_pressed_sound": "ui/item_light_gun_pickup.wav",
-        "drop_sound": "ui/item_light_gun_drop.wav"
-    },
-    "Festive Grenade Launcher": {
-        "Name": "Festive Grenade Launcher",
-        "Rome": False,
-        "Halloween": False,
-        "Class": "AllClass",
-        "Id": "AllClass",
-        "Icon": "backpack/weapons/c_models/c_grenadelauncher/c_grenadelauncher_xmas",
-        "mouse_pressed_sound": "ui/item_light_gun_pickup.wav",
-        "drop_sound": "ui/item_light_gun_drop.wav"
-    },
     "The Prize Plushy": {
         "Name": "The Prize Plushy",
         "Rome": False,
@@ -11183,96 +11039,6 @@ Cosmetic = {
         "Icon": "backpack/player/items/sniper/xms_braindeer_rare",
         "mouse_pressed_sound": "ui/item_hat_pickup.wav",
         "drop_sound": "ui/item_hat_drop.wav"
-    },
-    "Festive Force-a-Nature": {
-        "Name": "Festive Force-a-Nature",
-        "Rome": False,
-        "Halloween": False,
-        "Class": "AllClass",
-        "Id": "AllClass",
-        "Icon": "backpack/weapons/c_models/c_xms_double_barrel",
-        "mouse_pressed_sound": "ui/item_light_gun_pickup.wav",
-        "drop_sound": "ui/item_light_gun_drop.wav"
-    },
-    "Festive Crusader's Crossbow": {
-        "Name": "Festive Crusader's Crossbow",
-        "Rome": False,
-        "Halloween": False,
-        "Class": "AllClass",
-        "Id": "AllClass",
-        "Icon": "backpack/workshop/weapons/c_models/c_crusaders_crossbow/c_crusaders_crossbow_xmas",
-        "mouse_pressed_sound": "ui/item_light_gun_pickup.wav",
-        "drop_sound": "ui/item_light_gun_drop.wav"
-    },
-    "Festive Sapper": {
-        "Name": "Festive Sapper",
-        "Rome": False,
-        "Halloween": False,
-        "Class": "AllClass",
-        "Id": "AllClass",
-        "Icon": "backpack/weapons/c_models/c_sapper/c_sapper_xmas",
-        "mouse_pressed_sound": "ui/item_light_gun_pickup.wav",
-        "drop_sound": "ui/item_light_gun_drop.wav"
-    },
-    "Festive Flare Gun": {
-        "Name": "Festive Flare Gun",
-        "Rome": False,
-        "Halloween": False,
-        "Class": "AllClass",
-        "Id": "AllClass",
-        "Icon": "backpack/weapons/c_models/c_xms_flaregun/c_xms_flaregun",
-        "mouse_pressed_sound": "ui/item_light_gun_pickup.wav",
-        "drop_sound": "ui/item_light_gun_drop.wav"
-    },
-    "Festive Eyelander": {
-        "Name": "Festive Eyelander",
-        "Rome": False,
-        "Halloween": False,
-        "Class": "AllClass",
-        "Id": "AllClass",
-        "Icon": "backpack/weapons/c_models/c_claymore/c_claymore_xmas",
-        "mouse_pressed_sound": "ui/item_light_gun_pickup.wav",
-        "drop_sound": "ui/item_light_gun_drop.wav"
-    },
-    "Festive Jarate": {
-        "Name": "Festive Jarate",
-        "Rome": False,
-        "Halloween": False,
-        "Class": "AllClass",
-        "Id": "AllClass",
-        "Icon": "backpack/weapons/c_models/c_xms_urinejar",
-        "mouse_pressed_sound": "ui/item_light_gun_pickup.wav",
-        "drop_sound": "ui/item_light_gun_drop.wav"
-    },
-    "Festive Gloves of Running Urgently": {
-        "Name": "Festive Gloves of Running Urgently",
-        "Rome": False,
-        "Halloween": False,
-        "Class": "AllClass",
-        "Id": "AllClass",
-        "Icon": "backpack/weapons/c_models/c_boxing_gloves\\c_boxing_gloves_xmas",
-        "mouse_pressed_sound": "ui/item_light_gun_pickup.wav",
-        "drop_sound": "ui/item_light_gun_drop.wav"
-    },
-    "Festive Black Box": {
-        "Name": "Festive Black Box",
-        "Rome": False,
-        "Halloween": False,
-        "Class": "AllClass",
-        "Id": "AllClass",
-        "Icon": "backpack/workshop/weapons/c_models/c_blackbox/c_blackbox_xmas",
-        "mouse_pressed_sound": "ui/item_light_gun_pickup.wav",
-        "drop_sound": "ui/item_light_gun_drop.wav"
-    },
-    "Festive Wrangler": {
-        "Name": "Festive Wrangler",
-        "Rome": False,
-        "Halloween": False,
-        "Class": "AllClass",
-        "Id": "AllClass",
-        "Icon": "backpack/weapons/c_models/c_wrangler_xmas",
-        "mouse_pressed_sound": "ui/item_light_gun_pickup.wav",
-        "drop_sound": "ui/item_light_gun_drop.wav"
     },
     "Der Maschinensoldaten-Helm": {
         "Name": "Der Maschinensoldaten-Helm",

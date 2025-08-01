@@ -7,7 +7,6 @@ def find_robot_by_name(robot_name):
     """
     for block_name, robot_data in Template.items():
         if robot_data.get("Name") == robot_name:
-            print(f"Robot found in block: {block_name}")
             return block_name
     print(f"Robot with name '{robot_name}' not found in the library.")
     return None

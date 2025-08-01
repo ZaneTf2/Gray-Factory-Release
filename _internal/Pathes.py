@@ -24,6 +24,8 @@ class SystemPath(object):
         
     @lru_cache()
     def get(self, name : str, path : str = ""):
+        if name is None:
+            return None
         find = None
         name = name.replace(".png","").replace(".jpg","")
         

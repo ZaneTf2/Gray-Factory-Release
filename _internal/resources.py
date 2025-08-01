@@ -3,7 +3,7 @@ import os
 import re
 from pathlib import Path
 
-Debug = True
+Debug = False
 
 def resource_path():
     try:
@@ -12,6 +12,7 @@ def resource_path():
         base_path = os.path.abspath(".")
     path = os.path.abspath(f"{base_path}")
     return re.sub(r"[\\]", "/", path)
+
 if(Debug):
     print(f"[DEBUG : Resources] resources path : {resource_path()}")
 

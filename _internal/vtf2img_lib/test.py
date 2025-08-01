@@ -1,4 +1,4 @@
-import parser_1 as Parser
+import vtf2img_lib.parser as Parser
 vtf_file = "Arena_lumberyard_event.vtf"
 parser = Parser.Parser(vtf_file)
 header = parser.header

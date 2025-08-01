@@ -25,7 +25,7 @@ Mercenary = {
         "Secondary Weapons" : weapons_libary.Weapon_Libary["Scout"]["Secondary"]["Pistol"],
         "Melee" : weapons_libary.Weapon_Libary["Scout"]["Melee"]["Bat"],
         
-        "Atributes": [],
+        "Tag_Attributes": [],
         "Custom Parametrs" :  """""",
         "Model" : {},
     },
@@ -42,6 +42,7 @@ Mercenary = {
         "Skill" : 0,
         "Weapon Restriction" : 0,
         "Behavior" : 0,
+        
     
         "Tag" : [],
         "Cosmetics" : [],
@@ -50,7 +51,7 @@ Mercenary = {
         "Secondary Weapons" : weapons_libary.Weapon_Libary["Soldier"]["Secondary"]["Shotgun"],
         "Melee" : weapons_libary.Weapon_Libary["Soldier"]["Melee"]["Shovel"],
     
-        "Atributes": [],
+        "Tag_Attributes": [],
         "Custom Parametrs" :  """""",
         "Model" : {},
     },
@@ -75,7 +76,7 @@ Mercenary = {
         "Secondary Weapons" : weapons_libary.Weapon_Libary["Pyro"]["Secondary"]["Shotgun"],
         "Melee" : weapons_libary.Weapon_Libary["Pyro"]["Melee"]["Fire Axe"],
     
-        "Atributes": [],
+        "Tag_Attributes": [],
         "Custom Parametrs" :  """""",
         "Model" : {},
     },
@@ -100,7 +101,7 @@ Mercenary = {
         "Secondary Weapons" : weapons_libary.Weapon_Libary["Demoman"]["Secondary"]["Stickybomb Launcher"],
         "Melee" : weapons_libary.Weapon_Libary["Demoman"]["Melee"]["Bottle"],
     
-        "Atributes": [],
+        "Tag_Attributes": [],
         "Custom Parametrs" :  """""",
         "Model" : {},
     },
@@ -125,9 +126,14 @@ Mercenary = {
         "Secondary Weapons" : weapons_libary.Weapon_Libary["Heavy"]["Secondary"]["Shotgun"],
         "Melee" : weapons_libary.Weapon_Libary["Heavy"]["Melee"]["The Killing Gloves of Boxing"],
     
-        "Atributes": [],
+        "Tag_Attributes": [],
         "Custom Parametrs" :  """""",
-        "Model" : {},
+        "Model" : {}
+        #{
+        #    "obj" : Path(f"{resources()}/model/bot_heavy.mdl"), 
+        #    "texture": Path(f"{resources()}/model/bot_heavy_blue.vtf"),
+        #    "mtl": Path(f"{resources()}/model/bot_heavy.mtl"),
+        #}
     },
     "Engineer" : {
         "Name" : "Engineer",
@@ -150,7 +156,7 @@ Mercenary = {
         "Secondary Weapons" : weapons_libary.Weapon_Libary["Engineer"]["Secondary"]["Pistol"],
         "Melee" : weapons_libary.Weapon_Libary["Engineer"]["Melee"]["Wrench"],
     
-        "Atributes": [],
+        "Tag_Attributes": [],
         "Custom Parametrs" :  """""",
         "Model" : {},
     },
@@ -175,14 +181,14 @@ Mercenary = {
         "Secondary Weapons" : weapons_libary.Weapon_Libary["Medic"]["Secondary"]["Medi Gun"],
         "Melee" : weapons_libary.Weapon_Libary["Medic"]["Melee"]["Bonesaw"],
     
-        "Atributes": [],
+        "Tag_Attributes": [],
         "Custom Parametrs" :  """""",
-        "Model" : 
-        {
-            "obj" : Path(f"{resources()}/resources/Models/Medic/bot_medic.obj"), 
-            "texture": Path(f"{resources()}/resources/Models/Medic/bot_medic_blue.png"),
-            "mtl": Path(f"{resources()}/resources/Models/Medic/bot_medic.mtl"),
-        }
+        "Model" : {}
+        #{
+        #    "obj" : Path(f"{resources()}/resources/Models/Medic/bot_medic.obj"), 
+        #    "texture": Path(f"{resources()}/resources/Models/Medic/bot_medic_blue.png"),
+        #    "mtl": Path(f"{resources()}/resources/Models/Medic/bot_medic.mtl"),
+        #}
     },
     "Sniper" : {
         "Name" : "Sniper",
@@ -205,7 +211,7 @@ Mercenary = {
         "Secondary Weapons" : weapons_libary.Weapon_Libary["Sniper"]["Secondary"]["SMG"],
         "Melee" : weapons_libary.Weapon_Libary["Sniper"]["Melee"]["Kukri"],
     
-        "Atributes": [],
+        "Tag_Attributes": [],
         "Custom Parametrs" :  str,
         "Model" : {},
     },
@@ -229,8 +235,8 @@ Mercenary = {
         "Primary Weapon" : weapons_libary.Weapon_Libary["Spy"]["Primary"]["Revolver"],
         "Secondary Weapons" : weapons_libary.Weapon_Libary["Spy"]["Secondary"]["Sapper"],
         "Melee" : weapons_libary.Weapon_Libary["Spy"]["Melee"]["Knife"],
-    
-        "Atributes": [],
+        
+        "Tag_Attributes": [],
         "Custom Parametrs" :  """""",
         "Model" : {},
     },
@@ -256,7 +262,7 @@ Mercenary = {
         "Secondary Weapons" : weapons_libary.Weapon_Libary["Scout"]["Secondary"]["Pistol"],
         "Melee" : weapons_libary.Weapon_Libary["Scout"]["Melee"]["Bat"],
         
-        "Atributes": [],
+        "Tag_Attributes": [],
         "Custom Parametrs" :  """""",
         "Model" : {},
     },
