@@ -4,11 +4,7 @@ A mission editor for Team Fortress 2 Mann vs Machine. Create and edit .pop files
 
 ## Features
 
-- Create and edit waves with bots
-- Configure bot attributes and cosmetics
-- Manage weapons and skins
 - 3D model preview
-- Template support for quick bot creation
 
 ## Requirements
 
