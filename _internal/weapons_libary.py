@@ -1,20 +1,65 @@
-def find_weapon_info(weapon_name):
+def find_weapon_info(weapon_name: str):
     """
     Поиск информации об оружии в библиотеке Weapon_Libary.
-    
+   
     :param weapon_name: Название оружия для поиска.
     :return: Словарь с информацией о классе, типе оружия и его названии, или сообщение об отсутствии.
     """
+    if not weapon_name or not weapon_name.strip():
+        return None
+    
+    search_term = weapon_name.lower().strip()
+    search_words = search_term.split()
+    best_match = None
+    best_score = 0
+    
     for class_name, weapon_types in Weapon_Libary.items():
         for weapon_type, weapons in weapon_types.items():
             for weapon in weapons.values():
-                if weapon["name"].lower() == weapon_name.lower():
+                weapon_name_lower = weapon["name"].lower()
+                weapon_words = weapon_name_lower.split()
+                
+                # Точное совпадение (наивысший приоритет)
+                if search_term == weapon_name_lower:
                     return {
                         "Class": class_name,
                         "Type": weapon_type,
                         "name": weapon["name"]
                     }
-    return None
+                if search_term in weapon_words:
+                    return {
+                        "Class": class_name,
+                        "Type": weapon_type,
+                        "name": weapon["name"]
+                    }
+                # Подсчет совпадающих значимых слов (длиннее 2 символов)
+                search_significant_words = [word for word in search_words if len(word) > 2]
+                weapon_significant_words = [word for word in weapon_words if len(word) > 2]
+                
+                if not search_significant_words:
+                    continue
+                
+                matching_words = sum(1 for word in search_significant_words 
+                                   if word in weapon_significant_words)
+                
+                # Требуем совпадения большинства значимых слов
+                if matching_words > 0:
+                    # Вычисляем точность совпадения
+                    precision = matching_words / len(search_significant_words)
+                    recall = matching_words / len(weapon_significant_words) if weapon_significant_words else 0
+                    
+                    # Требуем высокую точность (минимум 70% слов из поиска должны совпасть)
+                    if precision >= 0.7:
+                        score = matching_words * 10 + precision * 5 + recall * 2
+                        
+                        if score > best_score:
+                            best_match = {
+                                "Class": class_name,
+                                "Type": weapon_type,
+                                "name": weapon["name"]
+                            }
+                            best_score = score        
+    return best_match
 
 Weapon_Libary = {
     "Scout": {
@@ -24,8 +69,8 @@ Weapon_Libary = {
                 "Id": "tf_weapon_scattergun",
                 "Icon": "Backpack_Scattergun"
             },
-            "Force-A-Nature": {
-                "name": "Force-A-Nature",
+            "The Force-a-Nature": {
+                "name": "The Force-a-Nature",
                 "Id": "tf_weapon_scattergun",
                 "Icon": "Backpack_Force-A-Nature"
             },
@@ -1024,7 +1069,7 @@ Weapon_Libary = {
             },
         }
     },
-    "Heavy": {
+    "Heavyweapons": {
         "Primary": {
             "Minigun": {
                 "name": "Minigun",
@@ -1536,12 +1581,12 @@ Weapon_Libary = {
         "Primary": {
             "Syringe Gun": {
                 "name": "Syringe Gun",
-                "Id": "tf_weapon_syringegun_medic",
+                "Id": "TF_WEAPON_SYRINGEGUN_MEDIC",
                 "Icon": "syringegun"
             },
             "The Blutsauger": {
                 "name": "The Blutsauger",
-                "Id": "tf_weapon_syringegun_medic",
+                "Id": "TF_WEAPON_SYRINGEGUN_MEDIC",
                 "Icon": "bloodsiger"
             },
             "Crusader's Crossbow": {
@@ -1551,7 +1596,7 @@ Weapon_Libary = {
             },
             "The Overdose": {
                 "name": "The Overdose",
-                "Id": "tf_weapon_syringegun_medic",
+                "Id": "TF_WEAPON_SYRINGEGUN_MEDIC",
                 "Icon": "overdose"
             },
             "Festive Crusader's Crossbow": {
@@ -2054,8 +2099,8 @@ Weapon_Libary = {
                 "Id": "tf_weapon_knife",
                 "Icon": "None"
             },
-            "Festive Knife": {
-                "name": "Festive Knife",
+            "Festive Knife 2011": {
+                "name": "Festive Knife 2011",
                 "Id": "tf_weapon_knife",
                 "Icon": "knife_xmas"
             },

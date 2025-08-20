@@ -105,9 +105,9 @@ Mercenary = {
         "Custom Parametrs" :  """""",
         "Model" : {},
     },
-    "Heavy" : {
+    "Heavyweapons" : {
         "Name" : "Heavy",
-        "Class Name" : "Heavy",
+        "Class Name" : "Heavyweapons",
         "Class" : 4,
         "Health" : 300,
         "Icon" : icons["leaderboard_class_heavy"],
@@ -122,9 +122,9 @@ Mercenary = {
         "Tag" : [],
         "Cosmetics" : [],
     
-        "Primary Weapon" : weapons_libary.Weapon_Libary["Heavy"]["Primary"]["Festive Minigun"],
-        "Secondary Weapons" : weapons_libary.Weapon_Libary["Heavy"]["Secondary"]["Shotgun"],
-        "Melee" : weapons_libary.Weapon_Libary["Heavy"]["Melee"]["The Killing Gloves of Boxing"],
+        "Primary Weapon" : weapons_libary.Weapon_Libary["Heavyweapons"]["Primary"]["Festive Minigun"],
+        "Secondary Weapons" : weapons_libary.Weapon_Libary["Heavyweapons"]["Secondary"]["Shotgun"],
+        "Melee" : weapons_libary.Weapon_Libary["Heavyweapons"]["Melee"]["The Killing Gloves of Boxing"],
     
         "Tag_Attributes": [],
         "Custom Parametrs" :  """""",

@@ -1,7 +1,19 @@
 # pop_editor_with_update.py
 
 import os
+import threading
 import requests
+# pop_editor_with_update.py
+
+# Базовые ключевые слова для редактора POP-файлов
+POP_KEYWORDS = {
+    'WaveSpawn', 'StartWave', 'EndWave', 'TotalCurrency', 'Support', 
+    'Tank', 'Action', 'Squad', 'TFBot', 'Class', 'Skill', 'Where',
+    'TotalCount', 'MaxActive', 'SpawnCount', 'WaitBeforeStarting', 
+    'WaitBetweenSpawns', 'WaitWhenDone', 'Template', 'Templates',
+    'AddCond', 'Item', 'CharacterAttributes', 'ItemAttributes'
+}
+
 from PyQt6 import QtCore
 from PyQt6.QtWidgets import (
     QWidget,
@@ -11,7 +23,8 @@ from PyQt6.QtWidgets import (
     QListWidget,
     QMessageBox,
     QHBoxLayout,
-    QPushButton
+    QPushButton,
+    QStylePainter,
 )
 from PyQt6.QtCore import Qt, QTimer
 from PyQt6.Qsci import (
@@ -61,14 +74,14 @@ def download_latest_snippets(github_path="snippets/popfile.json", gitlab_path="s
     )
     # GitHub
     github_snippets = {}
-    try:
-        resp = requests.get(RAW_URL, timeout=10)
-        resp.raise_for_status()
-        main_snip = resp.content
-        main_snip_str = main_snip.decode("utf-8")
-        github_snippets = json_parser.loads(main_snip_str)
-    except Exception as e:
-        print(f"Ошибка загрузки или парсинга github snippets: {e}")
+    #try:
+    #    resp = requests.get(RAW_URL, timeout=10)
+    #    resp.raise_for_status()
+    #    main_snip = resp.content
+    #    main_snip_str = main_snip.decode("utf-8")
+    #    github_snippets = json_parser.loads(main_snip_str)
+    #except Exception as e:
+    #    print(f"Ошибка загрузки или парсинга github snippets: {e}")
     # GitLab
     gitlab_snippets = {}
     try:
@@ -86,8 +99,8 @@ def download_latest_snippets(github_path="snippets/popfile.json", gitlab_path="s
         print(f"Ошибка загрузки или парсинга gitlab snippets: {e}")
     # Сохраняем отдельно
     os.makedirs(os.path.dirname(github_path), exist_ok=True)
-    with open(github_path, "w", encoding="utf-8") as f:
-        json.dump(github_snippets, f, ensure_ascii=False, indent=2)
+    #with open(github_path, "w", encoding="utf-8") as f:
+    #    json.dump(github_snippets, f, ensure_ascii=False, indent=2)
     with open(gitlab_path, "w", encoding="utf-8") as f:
         json.dump(gitlab_snippets, f, ensure_ascii=False, indent=2)
     print(f"GitHub snippets: {github_path}\nGitLab snippets: {gitlab_path}")
@@ -121,13 +134,8 @@ class PopLexer(QsciLexerCustom):
             'Identifier': 10
         }
         
-        # Базовые ключевые слова
-        self._keywords = {
-            'WaveSpawn', 'StartWave', 'EndWave', 'TotalCurrency', 'Support', 
-            'Tank', 'Action', 'Squad', 'TFBot', 'Class', 'Skill', 'Where',
-            'TotalCount', 'MaxActive', 'SpawnCount', 'WaitBeforeStarting', 
-            'WaitBetweenSpawns'
-        }
+        # Используем общий список ключевых слов
+        self._keywords = POP_KEYWORDS.copy()
         
         # Загружаем синтаксис из JSON
         self._syntax_rules = self._load_syntax_rules()
@@ -302,54 +310,82 @@ from PyQt6.QtWidgets import QMessageBox, QTextEdit
 import random
 
 
-# Новый менеджер: два источника
 class SnippetManager:
     def __init__(self, github_file):
         self.snippets_github = {}
         self.snippet_bodies_github = {}
         self.load_snippets(github_file)
-    
+   
     def load_snippets(self, github_path):
         try:
             self.snippets_github = load_snippets(github_path)
         except Exception as e:
             QMessageBox.critical(None, "Ошибка загрузки GitHub-сниппетов", f"{e}")
             self.snippets_github = {}
+        
         self.snippet_bodies_github = {}
         for name, entry in self.snippets_github.items():
-            prefix = entry.get("prefix")
-            body = entry.get("body", [])
+            prefix = entry.get("prefix", name)
+            body = entry.get("body")
+            
+            # Если body пустое, None или отсутствует - используем имя блока
+            if body is None or not body:
+                body = [name]
+            elif isinstance(body, str):
+                body = [body]
+            elif not isinstance(body, list):
+                body = [str(body)]
+            
+            # Сохраняем сниппет
+            self.snippet_bodies_github[name] = (body, prefix)
+            prefix = name
+            
             display_name = name
+            
             if isinstance(prefix, list):
                 for p in prefix:
                     self.snippet_bodies_github[display_name] = (body, p)
             else:
                 self.snippet_bodies_github[display_name] = (body, prefix)
-
-
+    
     def get_filtered(self, prefix):
         prefix = prefix.lower()
-        return [name for name, (body, pfx) in self.snippet_bodies_github.items()
+        # Получаем совпадения из сниппетов
+        snippet_matches = [name for name, (body, pfx) in self.snippet_bodies_github.items()
                 if str(pfx).lower().startswith(prefix) or name.lower().startswith(prefix)]
-
+        
+        # Получаем совпадения из ключевых слов
+        keyword_matches = [kw for kw in POP_KEYWORDS if kw.lower().startswith(prefix)]
+        
+        # Объединяем результаты
+        all_matches = list(set(snippet_matches + keyword_matches))
+        #print(f"Фильтрация для префикса '{prefix}':")
+        #print(f"Найдено сниппетов: {len(snippet_matches)}")
+        #print(f"Найдено ключевых слов: {len(keyword_matches)}")
+        #print(f"Общий список: {all_matches}")
+        return all_matches
+     
     def get_body(self, name):
-        return self.snippet_bodies_github.get(name, ([], ''))[0]
-
+        body, _ = self.snippet_bodies_github.get(name, ([], ''))
+        # Если body пустое, возвращаем имя сниппета
+        return body if body else [name]
+    
     def get_prefix(self, name):
         return self.snippet_bodies_github.get(name, ([], ''))[1]
-
+    
     def render_snippet(self, body):
-        import re
         rendered = []
         for line in body:
             if not isinstance(line, str):
                 line = str(line)
+            
             def repl(m):
                 val = m.group(1)
                 if ',' in val:
                     options = [v.strip() for v in val.split(',')]
                     return random.choice(options)
                 return val
+            
             rendered.append(re.sub(r'\$\{\d+:(.+?)\}', repl, line))
         return rendered
 
@@ -390,6 +426,14 @@ class PopEditorWindow(QWidget):  # Используем QWidget как базо�
         self.snippet_manager = SnippetManager.__new__(SnippetManager)
         self.snippet_manager.snippets_github = {}
         self.snippet_manager.snippet_bodies_github = {}
+        
+        self.ghost_text = ""
+        self.ghost_line = 0
+        self.ghost_col = 0
+        self.ghost_visible = False
+        
+        # Настраиваем кастомную отрисовку
+        self.setup_custom_drawing()
         
         # Откладываем загрузку сниппетов
         QTimer.singleShot(50, self.load_snippets)  # 50ms задержка для быстрого запуска
@@ -460,22 +504,70 @@ class PopEditorWindow(QWidget):  # Используем QWidget как базо�
             print(f"Ошибка обновления API: {e}")
             
     def update_snippets(self):
-        """Фоновое обновление сниппетов"""
+        """Запуск фонового обновления сниппетов"""
+        if hasattr(self, '_update_thread') and self._update_thread.is_alive():
+            print("Обновление уже выполняется...")
+            return
+        
+        self._update_thread = threading.Thread(
+            target=self._background_update_snippets,
+            daemon=True  # Поток завершится при закрытии программы
+        )
+        self._update_thread.start()
+        print("Запущено фоновое обновление сниппетов...")
+
+    def _background_update_snippets(self):
+        """Фоновое обновление сниппетов в отдельном потоке"""
         try:
+            print("Начинаем обновление сниппетов...")
+            
             # Скачиваем актуальные файлы
             download_latest_snippets(
                 "snippets/popfile.json",
                 "snippets/popfile.tmLanguage.json"
             )
-            # Перезагружаем после обновления
-            self.snippet_manager = SnippetManager("snippets/popfile.json")
-            # Обновляем API
-            self.update_apis()
-            # Перезагружаем подсветку синтаксиса
-            self.reload_syntax_highlighting()
+            
+            # Перезагружаем после обновления (в главном потоке)
+            self._schedule_ui_update()
+            
             print("Сниппеты и синтаксис успешно обновлены")
+            
         except Exception as e:
             print(f"Ошибка обновления сниппетов: {e}")
+
+    def _schedule_ui_update(self):
+        """Планирование обновления UI в главном потоке"""
+        # Если используете tkinter
+        if hasattr(self, 'root'):  # tkinter
+            self.root.after(0, self._update_ui_components)
+        
+        # Если используете Qt
+        elif hasattr(self, 'app'):  # PyQt/PySide
+            from PyQt6.QtCore import QTimer
+            QTimer.singleShot(0, self._update_ui_components)
+        
+        # Если другой GUI фреймворк, добавьте соответствующий код
+        else:
+            # Прямое обновление (может быть небезопасно для некоторых GUI)
+            self._update_ui_components()
+
+    def _update_ui_components(self):
+        """Обновление компонентов UI (должно выполняться в главном потоке)"""
+        print("Обновление UI компонентов...")
+        #try:
+        #    # Перезагружаем менеджер сниппетов
+        #    self.snippet_manager = SnippetManager("snippets/popfile.json")
+        #    
+        #    # Обновляем API
+        #    self.update_apis()
+        #    
+        #    # Перезагружаем подсветку синтаксиса
+        #    self.reload_syntax_highlighting()
+        #    
+        #    print("UI компоненты обновлены")
+        #    
+        #except Exception as e:
+        #    print(f"Ошибка обновления UI: {e}")
             
     def setup_editor(self):
         """Настройка редактора и его компонентов"""
@@ -593,7 +685,7 @@ QsciScintilla::margin {
 
         # 4. Настройка автодополнения
         self.editor.setAutoCompletionSource(QsciScintilla.AutoCompletionSource.AcsAPIs)
-        self.editor.setAutoCompletionThreshold(1)  # Показывать после первого символа
+        self.editor.setAutoCompletionThreshold(0)  # Показывать с первого символа
         self.editor.setAutoCompletionCaseSensitivity(False)
         self.editor.setAutoCompletionReplaceWord(True)
         self.editor.setAutoCompletionUseSingle(QsciScintilla.AutoCompletionUseSingle.AcusNever)
@@ -753,6 +845,7 @@ QsciScintilla::margin {
     def showEvent(self, event):
         super().showEvent(event)
         self.on_text_changed()
+        
     def eventFilter(self, obj, event):
         from PyQt6.QtCore import Qt
         if obj == self.editor and event.type() == event.Type.KeyPress:
@@ -806,31 +899,82 @@ QsciScintilla::margin {
         from PyQt6.QtCore import Qt
         def new_keypress(event):
             key = event.key()
+            text = event.text()
             cursor = self.editor.getCursorPosition()
             line, index = cursor
             text_line = self.editor.text(line)
-            # Проверка Backspace
+            
+            # Автозакрытие парных символов
+            pairs = {
+                '{': '}',
+                '[': ']',
+                '(': ')',
+                '<': '>',
+                '"': '"',
+                "'": "'"
+            }
+            
+            # Обработка навигации по сниппетам
+            if self.snippet_popup.isVisible():
+                if key == Qt.Key.Key_Up:
+                    current = self.snippet_popup.currentRow()
+                    if current > 0:
+                        self.snippet_popup.setCurrentRow(current - 1)
+                    return
+                elif key == Qt.Key.Key_Down:
+                    current = self.snippet_popup.currentRow()
+                    if current < self.snippet_popup.count() - 1:
+                        self.snippet_popup.setCurrentRow(current + 1)
+                    return
+                elif key == Qt.Key.Key_Return or (key == Qt.Key.Key_Tab and self.snippet_popup.currentItem() is not None):
+                    self.insert_selected_snippet()
+                    return
+                elif key == Qt.Key.Key_Escape:
+                    self.snippet_popup.hide()
+                    self.snippet_preview.hide()
+                    return
+            
+            # Обработка автозакрытия скобок и кавычек
+            if text in pairs:
+                # Получаем текущую позицию и следующий символ
+                next_char = text_line[index] if index < len(text_line) else ""
+                
+                # Автоматически добавляем закрывающий символ только если:
+                # 1. Следующий символ не является закрывающей скобкой или пробелом
+                # 2. Или это конец строки
+                if next_char not in (pairs.values()) and (next_char.isspace() or not next_char):
+                    # Пропускаем обработку события
+                    event.accept()
+                    # Вставляем оба символа
+                    self.editor.insert(text + pairs[text])
+                    # Возвращаем курсор назад на одну позицию
+                    self.editor.setCursorPosition(line, index + 1)
+                    return
+                
+            # Обработка backspace для удаления парных символов
             if key == Qt.Key.Key_Backspace and index > 0 and index < len(text_line):
                 left = text_line[index-1]
                 right = text_line[index]
-                pairs = {'{': '}', '(': ')', '[': ']'},
                 if left in pairs and right == pairs[left]:
                     # Проверяем, что между ними ничего нет
                     if text_line[index-1:index+1] == left+right:
                         self.editor.setSelection(line, index-1, line, index+1)
                         self.editor.removeSelectedText()
                         return
-            # Проверка Delete
-            if key == Qt.Key.Key_Delete and index < len(text_line)-1 and index >= 0:
+            
+            # Обработка delete для удаления парных символов
+            if key == Qt.Key.Key_Delete and index < len(text_line)-1:
                 left = text_line[index]
                 right = text_line[index+1]
-                pairs = {'{': '}', '(': ')', '[': ']'},
                 if left in pairs and right == pairs[left]:
                     if text_line[index:index+2] == left+right:
                         self.editor.setSelection(line, index, line, index+2)
                         self.editor.removeSelectedText()
                         return
+                        
+            # Вызываем оригинальный обработчик только один раз
             orig_keypress(event)
+        
         return new_keypress
 
     def on_text_changed(self):
@@ -843,12 +987,12 @@ QsciScintilla::margin {
         # Получаем текущую позицию и текст
         line, index = self.editor.getCursorPosition()
         text = self.editor.text(line)[:index]
-        match = re.search(r'(\w{1,40})$', text)
+        match = re.search(r'(\w*)$', text)  # Разрешаем пустой префикс
         prefix = match.group(1) if match else ''
 
         # Сниппеты
         snippet_names = set()
-        if prefix and hasattr(self, 'snippet_manager') and self.snippet_manager:
+        if hasattr(self, 'snippet_manager') and self.snippet_manager:
             snippet_names = set(self.snippet_manager.get_filtered(prefix))
 
         # Ключевые слова из синтаксиса
@@ -881,51 +1025,129 @@ QsciScintilla::margin {
         # Обновляем подсветку синтаксиса
         if hasattr(self, 'editor') and self.editor and isinstance(self.editor.lexer(), PopLexer):
             self.editor.recolor()
-
-    def show_ghost_text(self, prefix, suggestion_name):
-        """Показывает полупрозрачный текст подсказки"""
-        try:
-            # Очищаем предыдущий ghost-текст
-            self.editor.SendScintilla(self.editor.SCI_SETINDICATORCURRENT, 0)
-            self.editor.SendScintilla(self.editor.SCI_INDICATORCLEARRANGE, 0, self.editor.length())
+        
+    def setup_custom_drawing(self):
+        """Настройка кастомной отрисовки для ghost-текста"""
+        # Подключаем обработчик отрисовки
+        self.editor.paintEvent = self.custom_paint_event
+        self.original_paint_event = QsciScintilla.paintEvent
+        
+    def custom_paint_event(self, event):
+        """Кастомная отрисовка с ghost-текстом"""
+        # Сначала рисуем обычный текст
+        self.original_paint_event(self.editor, event)
+        
+        # Если есть ghost-текст, рисуем его
+        #if self.ghost_visible and self.ghost_text:
+        #    self.draw_ghost_text()
+        #else:
+        #    self.hide_ghost_text()  # Скрываем если нет текста
             
-            if not suggestion_name or not self.snippet_manager:
+    def draw_ghost_text(self):
+        """Отрисовка ghost-текста"""
+        try:
+            painter = QStylePainter(self.editor.viewport())
+
+            # Настраиваем шрифт и цвет
+            font = self.editor.font()
+            painter.setFont(font)
+            
+            # Полупрозрачный серый цвет
+            ghost_color = QColor(255, 255, 255, 70)  # RGBA с альфой
+            painter.setPen(QColor(ghost_color))
+            
+            # Получаем позицию для отрисовки
+            line_height = self.editor.textHeight(0)
+            char_width = self.editor.fontMetrics().horizontalAdvance(' ')
+            
+            # Вычисляем координаты
+            x = self.ghost_col * char_width
+            y = (self.ghost_line + 1) * line_height
+            
+            # Получаем видимую область
+            first_visible_line = self.editor.firstVisibleLine()
+            y_offset = first_visible_line * line_height
+            
+            # Корректируем позицию относительно прокрутки
+            final_y = y - y_offset
+            
+            # Рисуем ghost-текст только если он в видимой области
+            if 0 <= final_y <= self.editor.height():
+                painter.drawText(x, final_y, self.ghost_text)
+
+            painter.end()
+            
+        except Exception as e:
+            print(f"Ошибка отрисовки ghost-текста: {e}")
+    
+    def show_ghost_text(self, prefix, suggestion_name):
+        """Показывает ghost-текст в стиле VS Code"""
+        try:
+            if not suggestion_name or not hasattr(self, 'snippet_manager'):
+                self.hide_ghost_text()
                 return
                 
             # Получаем содержимое сниппета
-            body = self.snippet_manager.get_body(suggestion_name)
+            body = self.snippet_manager.get_body(suggestion_name) if hasattr(self, 'snippet_manager') else suggestion_name
             if not body:
-                print(f"Нет тела для сниппета: {suggestion_name}")
-                return
+                body = suggestion_name
                 
-            # Рендерим сниппет
-            rendered = self.snippet_manager.render_snippet(body)
-            if not rendered:
-                print(f"Ошибка рендеринга сниппета: {suggestion_name}")
-                return
+            # Рендерим сниппет (если есть менеджер)
+            if hasattr(self, 'snippet_manager'):
+                rendered = self.snippet_manager.render_snippet(body)
+                if not rendered:
+                    return
+                ghost = rendered[0]
+            else:
+                ghost = body
                 
-            ghost = rendered[0]  # Берем первую строку
-            
             # Проверяем соответствие префиксу
             if ghost.lower().startswith(prefix.lower()):
                 ghost_tail = ghost[len(prefix):]
                 if ghost_tail:
-                    print(f"Показываем ghost-текст: {ghost_tail}")
-                    
-                    # Настраиваем индикатор
-                    self.editor.SendScintilla(self.editor.SCI_INDICSETSTYLE, 0, self.editor.INDIC_PLAIN)
-                    self.editor.SendScintilla(self.editor.SCI_INDICSETFORE, 0, QColor(128, 128, 128, 100).rgb() & 0xFFFFFF)
-                    self.editor.SendScintilla(self.editor.SCI_INDICSETALPHA, 0, 100)
-                    
-                    # Получаем позицию для вставки
+                    # Получаем текущую позицию курсора
                     line, col = self.editor.getCursorPosition()
-                    pos = self.editor.positionFromLineIndex(line, col)
                     
-                    # Показываем ghost-текст
-                    self.editor.SendScintilla(self.editor.SCI_INDICATORFILLRANGE, pos, len(ghost_tail))
-            
+                    # Сохраняем информацию о ghost-тексте
+                    self.ghost_text = ghost_tail
+                    self.ghost_line = line 
+                    self.ghost_col = col + 9
+                    self.ghost_visible = True
+                    
+                    # Принудительно перерисовываем
+                    self.editor.update()
+                    
+                    print(f"Показываем ghost-текст: '{ghost_tail}' на позиции ({line}, {col})")
+                else:
+                    self.hide_ghost_text()
+            else:
+                self.hide_ghost_text()
+                
         except Exception as e:
             print(f"Ошибка при показе ghost-текста: {e}")
+            
+    def hide_ghost_text(self):
+        """Скрывает ghost-текст"""
+        self.ghost_visible = False
+        self.ghost_text = ""
+        self.ghost_line = -1
+        self.ghost_col = -1
+        self.editor.update()  # Перерисовываем
+            
+    def accept_ghost_text(self):
+        """Принимает ghost-текст (вставляет его как обычный текст)"""
+        if self.ghost_visible and self.ghost_text:
+            # Вставляем текст в текущую позицию
+            current_pos = self.editor.SendScintilla(self.editor.SCI_GETCURRENTPOS)
+            self.editor.SendScintilla(self.editor.SCI_INSERTTEXT, current_pos, self.ghost_text.encode('utf-8'))
+            
+            # Перемещаем курсор в конец вставленного текста
+            new_pos = current_pos + len(self.ghost_text)
+            self.editor.SendScintilla(self.editor.SCI_SETSEL, new_pos, new_pos)
+            
+            self.hide_ghost_text()
+            return True
+        return False
 
     def update_snippet_preview(self):
         if not self.snippet_popup.isVisible() or self.snippet_popup.currentItem() is None or not self.isActiveWindow():
@@ -938,6 +1160,7 @@ QsciScintilla::margin {
             preview_text = display_name + "\n\n" + ("\n".join(body) if body else "")
         else:
             preview_text = display_name  # Для ключевых слов просто название
+        print(f"Обновляем превью сниппета: {preview_text}")
         self.snippet_preview.setPlainText(preview_text)
         # Позиционируем preview справа от popup
         popup_geo = self.snippet_popup.geometry()
@@ -950,21 +1173,40 @@ QsciScintilla::margin {
     def insert_selected_snippet(self):
         if not self.snippet_popup.isVisible() or self.snippet_popup.currentItem() is None:
             return
+            
         display_name = self.snippet_popup.currentItem().text()
         body = self.snippet_manager.get_body(display_name)
         prefix = self.snippet_manager.get_prefix(display_name)
         line, index = self.editor.getCursorPosition()
-        if body:  # Это сниппет
-            body = self.snippet_manager.render_snippet(body)
-            prefix_len = len(str(prefix))
-            self.editor.setSelection(line, index - prefix_len, line, index)
-            self.editor.replaceSelectedText("\n".join(body))
-        else:  # Это ключевое слово синтаксиса
-            prefix_len = len(str(prefix)) if prefix else len(display_name)
-            self.editor.setSelection(line, index - prefix_len, line, index)
-            self.editor.replaceSelectedText(display_name)
+        
+        # Находим начало текущего слова
+        text = self.editor.text(line)[:index]
+        match = re.search(r'(\w+)$', text)
+        
+        if match:
+            start_pos = index - len(match.group(1))
+            
+            if body:  # Это сниппет
+                body = self.snippet_manager.render_snippet(body)
+                # Заменяем только набранную часть слова
+                self.editor.setSelection(line, start_pos, line, index)
+                
+                # Если это многострочный сниппет, добавляем перенос строки перед ним
+                if len(body) > 1:
+                    current_indent = " " * (len(text) - len(text.lstrip()))
+                    formatted_body = [body[0]] + [current_indent + line for line in body[1:]]
+                    self.editor.replaceSelectedText("\n".join(formatted_body))
+                else:
+                    self.editor.replaceSelectedText(body[0])
+            else:  # Это ключевое слово
+                self.editor.setSelection(line, start_pos, line, index)
+                self.editor.replaceSelectedText(display_name)
+                
         self.snippet_popup.hide()
         self.snippet_preview.hide()
+        
+        # Восстанавливаем фокус на редакторе
+        self.editor.setFocus()
 
     def show_snippet_preview(self, *args):
         # Получить выбранный display_name

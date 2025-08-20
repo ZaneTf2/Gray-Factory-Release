@@ -1,4 +1,5 @@
 # === Стандартные библиотеки Python ===
+import re
 import shutil
 import sys
 import os
@@ -28,11 +29,9 @@ import weapons_libary
 import atribute_libary
 import default_mercenary as default_stat
 from Icons_Archive import icons as Icons_Archive
-from TemplateLibary import Template, find_robot_by_name
 from colorpicker import ColorPicker
 
 # === Импорт конкретных структур из библиотек ===
-from atribute_libary import Atribute
 from weapons_libary import Weapon_Libary
 
 # === Работа с 3D сценой ===
@@ -193,7 +192,11 @@ class Ui_MainWindow(object):
 
     def __init__(self):
         super().__init__()
+        
         self.GenerateWindow()
+        
+        global ChangeTracker
+        ChangeTracker = AutoChangeTracker(self.Main)
         
         self.GeneralInterface(self.Main)
         
@@ -213,6 +216,7 @@ class Ui_MainWindow(object):
         self.MercenaryCosmeticsRuntime()
         self.MercenaryAttributesRuntime()
         
+        self.fillTemplateList()
         self.BindHotKeys()
         
         self.retranslateUi(self.Main)
@@ -221,6 +225,9 @@ class Ui_MainWindow(object):
         WaveManagerGlobal.setWave("Wave 1")
         
         QtCore.QMetaObject.connectSlotsByName(self.Main)
+
+        ChangeTracker.auto_connect(self.centralwidget)
+
         self.Main.show()
         
     def GenerateWindow(self):
@@ -361,8 +368,17 @@ class Ui_MainWindow(object):
         self.load_mission_button.setStyleSheet("QPushButton{background-color: rgb(48, 48, 48);font: 9pt \"TF2 Build\";border-bottom-left-radius: 7px;border-bottom-right-radius: 7px;}QPushButton:hover{background-color: rgb(64, 64, 64);}")
         self.load_mission_button.setCheckable(True)
         self.load_mission_button.setObjectName("load_mission_button")
-        self.load_mission_button.clicked.connect(lambda: SaveManagerGlobal.Load())
-                
+        self.load_mission_button.clicked.connect(lambda: SaveManagerGlobal.Load(self.Main))
+
+        self.load_pop_mission_button = QtWidgets.QPushButton(parent=self.centralwidget)
+        self.load_pop_mission_button.setGeometry(QtCore.QRect(650, 72, 91, 26))
+        self.load_pop_mission_button.setMinimumSize(QtCore.QSize(70, 26))
+        self.load_pop_mission_button.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+        self.load_pop_mission_button.setStyleSheet("QPushButton{background-color: rgb(48, 48, 48);font: 9pt \"TF2 Build\";border-bottom-left-radius: 7px;border-bottom-right-radius: 7px;}QPushButton:hover{background-color: rgb(64, 64, 64);}")
+        self.load_pop_mission_button.setCheckable(True)
+        self.load_pop_mission_button.setObjectName("load_pop_mission_button")
+        self.load_pop_mission_button.clicked.connect(lambda: SaveManagerGlobal.Load_Pop_Mission(self.Main))
+
         self.clearAllMission = QtWidgets.QPushButton(parent=self.centralwidget)
         self.clearAllMission.setGeometry(QtCore.QRect(720, 0, 113, 30))
         self.clearAllMission.setMinimumSize(QtCore.QSize(70, 26))
@@ -389,7 +405,7 @@ class Ui_MainWindow(object):
         self.exportProjectButton.setCheckable(True)
         self.exportProjectButton.setObjectName("exportProjectButton")
         
-        generalGlobal.bindExportButton(self.exportProjectButton)
+        generalGlobal.bindExportButton(self.exportProjectButton, self.Main)
 
         self.generateMissionRandom = QtWidgets.QPushButton(parent=self.centralwidget)
         self.generateMissionRandom.setGeometry(QtCore.QRect(1100, 72, 131, 26))
@@ -411,7 +427,7 @@ class Ui_MainWindow(object):
         self.pushButton_9.setObjectName("pushButton_9")
         
         global SaveManagerGlobal
-        self.pushButton_9.clicked.connect(lambda: SaveManagerGlobal.Save())
+        self.pushButton_9.clicked.connect(lambda: SaveManagerGlobal.Save(self.Main))
         
         self.Main.setCentralWidget(self.centralwidget)
         
@@ -1365,6 +1381,17 @@ class Ui_MainWindow(object):
         keyboard.add_hotkey('Ctrl+E', lambda : self.exportProjectButton.click()) # Экспортировать Export
         keyboard.add_hotkey('Ctrl+L', lambda : self.load_mission_button.click()) # Загрузить Load
         
+    def fillTemplateList(self):
+        libary = TemplateLibary.getAllTemplates()
+        for item in libary:
+            icon1 = QtGui.QIcon()
+            if "ClassIcon" in libary[item]:
+                iconType = libary[item]['ClassIcon']
+                icon1.addPixmap(QtGui.QPixmap(f"{_systemPath.get(iconType)}" ), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+                self.Stats_Template.addItem(icon1, item)
+            else:
+                self.Stats_Template.addItem(item)        
+
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         self.Main.setWindowTitle(_translate("MainWindow", "Gray Factory"))
@@ -1386,6 +1413,7 @@ class Ui_MainWindow(object):
         self.DoneOutPut_2.setTitle(_translate("MainWindow", "Custom"))
         self.Text_3.setText(_translate("MainWindow", "Add"))
         self.load_mission_button.setText(_translate("MainWindow", "Load"))
+        self.load_pop_mission_button.setText(_translate("MainWindow", "Load Pop"))
         self.exportProjectButton.setText(_translate("MainWindow", "Export"))
         self.pushButton_9.setText(_translate("MainWindow", "Save"))
         self.generateMissionRandom.setText("Generate")
@@ -1414,11 +1442,8 @@ class AddButtonInWaveList(object):
             self.AllMercenary.clear()
             self.AllMercenary = []
             
-        _AddButtonInWaveList.AddButton("Add", command=lambda: Adding_New_Mercenary_To_Wave())
-    
-    def DeleteGlobalButton(self):
-        buttonMercenaryActive.deleteLater()
-
+        _AddButtonInWaveList.AddButton("Add", command = lambda: Adding_New_Mercenary_To_Wave())
+            
     def AddButton(self, exemplar_mercenary, title : str = "Add", count : int = 1, command = None, iconName : str = None):
         if exemplar_mercenary in self.AllMercenary and exemplar_mercenary != "Add":
             print(f"[ERROR] Mercenary {exemplar_mercenary} already exists in the list.")
@@ -1457,6 +1482,8 @@ class AddButtonInWaveList(object):
                 self.Button.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
                 self.Button.setMouseTracking(True)
                 self.Button.clicked.connect( lambda x : command () )
+                global ChangeTracker
+                ChangeTracker.connect_widget(self.Button)
 
             self.AllButtons.append(self.Item)
             self.horizontalLayout_4.addWidget(self.Item)
@@ -1480,8 +1507,9 @@ class Ui_GroupBox(QtWidgets.QMainWindow):
     def __init__(self):
         self.stat = None
         
-    def setupUi(self, stat = None):
+    def setupUi(self, stat = None, type_window = None):
         self.stat = stat
+        
         self.Box = QtWidgets.QMainWindow()
         self.Box.setObjectName("self")
         self.Box.resize(600, 500)
@@ -1559,13 +1587,24 @@ class Ui_GroupBox(QtWidgets.QMainWindow):
 
         # Cancel button
         pushButton = QtWidgets.QPushButton("Cancel")
-        pushButton.setMinimumHeight(32)
+        pushButton.setMinimumHeight(28)
         pushButton.setStyleSheet(
-            "border-radius: 7px;border:0;background-color: rgb(176, 57, 57);color: rgb(255, 255, 255);font: 9pt \"TF2 Build\";"
+            "height: 28px;border-radius: 7px; border:0;background-color: rgb(176, 57, 57);color: rgb(255, 255, 255);font: 9pt \"TF2 Build\";"
         )
         pushButton.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         pushButton.clicked.connect(lambda: self.exit_select())
         main_layout.addWidget(pushButton)
+    
+        if type_window == "Cosmetic":
+            # Import button
+            pushButton = QtWidgets.QPushButton("Import")
+            pushButton.setMinimumHeight(28)
+            pushButton.setStyleSheet(
+                "height: 28px;border-radius: 7px; border:0;background-color: rgb(57, 176, 57);color: rgb(255, 255, 255);font: 9pt \"TF2 Build\";"
+            )
+            pushButton.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+            pushButton.clicked.connect(lambda: LoadoutImport().import_loadout_from_file())
+            main_layout.addWidget(pushButton)
 
         QtCore.QMetaObject.connectSlotsByName(self.Box)
         self.Box.show()
@@ -1579,6 +1618,42 @@ class Ui_GroupBox(QtWidgets.QMainWindow):
 
     def exit_select(self):
         self.Box.close()
+
+class LoadoutImport():
+    def import_loadout_from_file(self):
+
+        Tk().withdraw()
+        file_path = fd.askopenfilename(
+            title="Select Loadout File",
+            filetypes=[("JSON Files", "*.json"), ("All Files", "*.*")]
+        )
+        Tk().destroy()
+        
+        if file_path:
+            with open(file_path, 'r', encoding='utf-8') as file:
+                self.loadout_data = file.read()
+                self.import_loadout(self.loadout_data)
+
+    def import_loadout(self, loadout_data):
+        json_data = json.loads(loadout_data)
+        global Mercenary_now
+        global cosmetic_list_class
+        if Mercenary_now is not None and "items" in json_data:
+            items = []
+            for item in json_data["items"]:
+                if item["id"] not in items:
+                    if "~" in item["id"]:
+                        item["id"] = re.sub(re.escape("~") + '.*', '', item["id"])
+                    items.append(item["id"])
+
+            for item in items:
+                item_info = parser.get_item_by_key(item)
+                if item_info:
+                    if "prefab" in item_info and "weapon" in item_info["prefab"]:
+                        items.pop(items.index(item))
+                        
+            Mercenary_now.stat["Cosmetics"] += items
+            Mercenary_now.rebuild_cosmetics()
 
 class Tile():
     global Global_Components
@@ -1653,8 +1728,10 @@ class Tile():
                     find[index] = item
                     
         def filtered_items():
+            name = Mercenary_now.stat['Class Name'].lower()
+            fixed_name_class = "heavy" if name == "heavyweapons" else name
             criteria = {
-                'used_by_classes': Mercenary_now.stat['Class Name'].lower(),
+                'used_by_classes': fixed_name_class,
                 'equip_region' : "hat",	
             }
             return parser.filter_items(criteria)   
@@ -1795,34 +1872,36 @@ class Tile():
         self.buttons.append(Item)
 
 
-class SaveManager(object):
+class SaveManager(object):    
     def __init__(self):
         super().__init__()
-
-    def Save(self):
+        self.Window = None
+        
+    def Save(self, window : QtWidgets.QMainWindow):
         global WaveManagerGlobal
         global InitSettingsGlobal
-        
-        global project_file
-        global generalGlobal
         global path_project_file
+        global generalGlobal
+
+        if window.isActiveWindow() == False:
+            return
         
-        missionName = f'{generalGlobal.buttonsGlobal["mapName_text"].text()}_{generalGlobal.buttonsGlobal["MissionName_text"].text()}'
-        try:
-            if project_file == None:
-                Tk().withdraw()
-                name = fd.asksaveasfile(title="Save Project", filetypes = [('Json Project', '*.json')], initialfile= missionName)
-                Tk().destroy()
-                
-                if name != None and len(name.name) > 0:
-                    name = name.name
-                    path_project_file = name
-                else:
-                    return
+        self.Window = window
+        
+        if path_project_file == None or os.path.exists(path_project_file) is False:
+            Tk().withdraw()
+            missionName = f'{generalGlobal.buttonsGlobal["mapName_text"].text().lower().replace(" ", "_")}_{generalGlobal.buttonsGlobal["MissionName_text"].text().lower().replace(" ", "_")}'
+            name = fd.asksaveasfile(title="Save Project", filetypes = [('Json Project', '*.json')], initialfile = missionName)
+            Tk().destroy()
+            
+            if name != None and len(name.name) > 0:
+                name = name.name
+                path_project_file = name
             else:
-                name = project_file
-        except:return
-        
+                return
+        else:
+            name = path_project_file
+                
         waveList = {}
         for key, value in WaveManagerGlobal.waveList.items():
             # Пропускаем все объекты, которые являются классами (например, QPushButton)
@@ -1881,29 +1960,37 @@ class SaveManager(object):
                     squadItem.clear()
                     squadItem.extend(allInSquad)
                     
-        if len(name) > 1:
-            out_file = open(f'{name.replace(".json", "")}.json', "w")
-            def convert_paths(obj):
-                if isinstance(obj, dict):
-                    return {k: convert_paths(v) for k, v in obj.items()}
-                elif isinstance(obj, list):
-                    return [convert_paths(i) for i in obj]
-                elif hasattr(obj, "as_posix"):
-                    return str(obj)
-                else:
-                    return obj
-            exit_file = convert_paths(waveList)
+        if len(path_project_file) > 1:
+            path_json = f'{Path(path_project_file.replace(".json", ""))}.json'
+            with open(path_json, "w") as out_file:
+                def convert_paths(obj):
+                    if isinstance(obj, dict):
+                        return {k: convert_paths(v) for k, v in obj.items()}
+                    elif isinstance(obj, list):
+                        return [convert_paths(i) for i in obj]
+                    elif hasattr(obj, "as_posix"):
+                        return str(obj)
+                    else:
+                        return obj
+                exit_file = convert_paths(waveList)
 
-            json.dump(exit_file, out_file)
+                json.dump(exit_file, out_file)
 
-            out_file.close()
-            project_file = name
-            
-        self.Load(True)
-        
-    def Load(self, oldSave : bool = False):
-        global project_file
+                out_file.close()
+                
+                global ChangeTracker
+                ChangeTracker.mark_as_saved(path_project_file)
+                print(f"[DEBUG] Save project to {path_json}")
+                self.Load(self.Window, True)
+
+    def Load(self, window : QtWidgets.QMainWindow, oldSave : bool = False):
         global path_project_file
+        
+        if window.isActiveWindow() == False:
+            return
+        
+        self.Window = window
+        
         if oldSave:
             name = path_project_file
         else:
@@ -1917,12 +2004,15 @@ class SaveManager(object):
                 return
         try:
             f = open(f'{name.replace(".json", "")}.json')
-            data = json.load(f)
+            data = json.load(f) 
+                        
             global WaveManagerGlobal
             WaveManagerGlobal.clearAll()
+            
             global SquadSettingsGlobal
             SquadSettingsGlobal.ClearSettingsSquad()
             SquadSettingsGlobal.clearSquad()
+            
             global InitSettingsGlobal
             
             InitSettingsGlobal.SetFromSave(data[next(iter(data))]["GlobalSettings"])
@@ -1932,9 +2022,12 @@ class SaveManager(object):
                 waveItem[item] = data[item]
                 WaveManagerGlobal.SetFromSave(waveItem)
                 
-            project_file = name
+            path_project_file = name
+            #WaveManagerGlobal.setWave(next(iter(WaveManagerGlobal.waveList)))
+
+            global ChangeTracker
+            ChangeTracker.mark_as_saved(path_project_file)
             
-            WaveManagerGlobal.setWave(next(iter(WaveManagerGlobal.waveList)))
             f.close()
             
         except Exception as e:
@@ -1943,6 +2036,39 @@ class SaveManager(object):
             print(f"[ERROR] Failed to load project: {e}")
             messagebox.showerror('Gray Factory', 'Error: File cannot be uploaded! \n' + str(e))
             Tk().destroy()
+
+    def Load_Pop_Mission(self, window : QtWidgets.QMainWindow):
+        global path_project_file
+        
+        if window.isActiveWindow() == False:
+            return
+        
+        self.Window = window
+        
+        Tk().withdraw()
+        name = fd.askopenfilename(title="Select Project", filetypes = [('Pop Project', '*.pop')])
+        name.replace(".pop", "")
+        Tk().destroy()
+
+        path_project_file = name.replace(".pop", "")
+        if len(name) <= 0:
+            return
+        #try:
+        self.PopFileImporter = PopFileImporterManager()
+        self.PopFileImporter.import_pop_file(name)
+        
+        self.PopFileImporter.loadGlobalSettings()
+        self.PopFileImporter.loadWave()
+        
+        path_project_file = name
+        global ChangeTracker
+        ChangeTracker.mark_as_saved(path_project_file)
+            
+        #except Exception as e:
+        #    Tk().withdraw()
+        #    print(f"[ERROR] Failed to load project: {e}")
+        #    messagebox.showerror('Gray Factory', 'Error: File cannot be uploaded! \n' + str(e))
+        #    Tk().destroy()
 
 
 class InitialSettings(object):
@@ -1990,7 +2116,7 @@ class InitialSettings(object):
     def save(self):
         self.money = int(self.GlobalButtons["startUpMoney_text"].text())
         try: 
-            self.restartTime = self.GlobalButtons["fixedRespawn_text"].text()
+            self.restartTime = int(self.GlobalButtons["fixedRespawn_text"].text())
         except Exception as e: 
             print("[ERROR] Failed to save restart time:", e)
         global WaveManagerGlobal
@@ -2061,8 +2187,8 @@ class WaveManager(object):
                 new_wave = self.allWave[current_index - 1]["Name"]
             elif self.allWave:  # Если удалённая волна была первой, выбираем новую первую волну
                 new_wave = self.allWave[0]["Name"]
-            #else:  # Если волн больше не осталось, создаём новую волну
-            #    new_wave = self.addWave()["Name"]
+            else:  # Если волн больше не осталось, создаём новую волну
+                new_wave = self.addWave()["Name"]
 
             self.waveCurrent = new_wave
             if new_wave:
@@ -2093,6 +2219,17 @@ class WaveManager(object):
         
         SquadSettingsGlobal.ClearSettingsSquad()
         
+    def AddReadyWave(self, data : list):
+        if "Name" not in data:
+            return
+        
+        self.waveList[data["Name"]] = data
+        self.allWave.append(data)
+        
+        global _AddButtonInWaveList
+        _AddButtonInWaveList.clear()
+        self.AddButtonToGlobal(data["Name"])
+        
     def SetFromSave(self, list : dict):
         _Squads = {}
         
@@ -2101,11 +2238,12 @@ class WaveManager(object):
             self.waveCount += 1
             
             for squad in wave["Squad"] or wave["Squads"]:
+                
                 createSquad = SquadSettingsGlobal.SetSquadFromSettings(wave["Squad"][squad])
                 _Squads[createSquad["Name"]] = createSquad
+                
                 Wave = {
                     "Name": wave.get("Name"),
-                    "Wave Queue": self.waveCount,
                     "Squad": _Squads,
                     "Support": [],
                     "Money": wave.get("Money"),
@@ -2227,7 +2365,7 @@ class WaveManager(object):
                 #if squad_data["Wave"] is not self.waveList[self.waveCurrent]["Name"]:
                 #    continue
                 if len(squad_data.get("InSquad", [])) <= 0:
-                    continue 
+                    continue
                 for item in squad_data.get("InSquad", []):  # Получаем список из "InSquad", если он есть
                     Adding_New_Mercenary_To_Wave(item)
 
@@ -2255,7 +2393,6 @@ class WaveManager(object):
         self.waveCount += 1
         Wave = {
             "Name" : nameWave,
-            "Wave Queue" : self.waveCount,
             "Squad" : {},
             "Support" : [],
             "Money" : 0,
@@ -2289,7 +2426,6 @@ class WaveManager(object):
                             ):
         Wave = {
             "Name" : nameWave,
-            "Wave Queue" : self.waveCount,
             "Squad" : {},
             "Support" : [],
             "Money" : 0,
@@ -2386,7 +2522,11 @@ class WaveManager(object):
         AddWave.setIcon(icon2)
         AddWave.setObjectName("AddWave")
         AddWave.clicked.connect(lambda : self.addWave())
+        
+        global ChangeTracker
+        ChangeTracker.connect_widget(AddWave)
         self.addWaveButton = AddWave
+        
         scrollBar.addWidget(AddWave)
         
         #if self.spacerItem != None:
@@ -2473,6 +2613,8 @@ class SquadSettings(object):
                     item.clicked.connect(lambda: (self.SaveSquad(), WaveManagerGlobal.CountingWave()))
                 else:
                     item.editingFinished.connect(lambda: (self.SaveSquad(), WaveManagerGlobal.CountingWave()))
+                global ChangeTracker
+                ChangeTracker.connect_widget(item)
             except Exception as e:
                 print(f"[Debug] Ошибка при подключении событий: {e}")
 
@@ -2482,26 +2624,42 @@ class SquadSettings(object):
             print(f"[Debug] Squad '{squad_name}' not found in SquadList.")
             return
         _squad = self.SquadList[squad_name]["InSquad"]
+        
         if Mercenary_now in _squad:
             _squad.remove(Mercenary_now)
+            
             if len(_squad) == 0:
-                self.SquadList.pop(squad_name, None)
+                self.SquadList.pop(squad_name)
+                
                 if "Squad" in CurrentWave and squad_name in CurrentWave["Squad"]:
-                    CurrentWave["Squad"].pop(squad_name, None)
+                    CurrentWave["Squad"].pop(squad_name)
+                    
                 self.curLocalSquad = None if not self.SquadList else next(iter(self.SquadList))
+            
             if self.curLocalSquad is not None and self.curLocalSquad in self.SquadList:
                 self.OpenSquad(self.curLocalSquad)
+                
             elif self.SquadList:
                 next_squad = next(iter(self.SquadList), None)
                 if next_squad:
                     self.OpenSquad(next_squad)
-            _AddButtonInWaveList.DeleteGlobalButton()
             WaveManagerGlobal.setWave(CurrentWave["Name"])
 
-    def CreateSquad(self, nameSquad: str = None, total_squad=10, max_active=1, squad_spawn=1,
-                    credit_for_squad=400, wait_before_spawn=0, wait_between_spawn=0,
-                    wait_all_spawn="", wait_all_dead="", where_spawn=0, support=False,
-                    random_choice=False, random_spawn=False):
+    def CreateSquad(self, 
+                    nameSquad: str = None, 
+                    total_squad=10, 
+                    max_active=1, 
+                    squad_spawn=1,
+                    credit_for_squad=400, 
+                    wait_before_spawn=0, 
+                    wait_between_spawn=0,
+                    wait_all_spawn="", 
+                    wait_all_dead="", 
+                    where_spawn=0, 
+                    support=False,
+                    random_choice=False, 
+                    random_spawn=False
+                    ):
 
         name = nameSquad or f"Squad {self.count_all_created_squad + 1}"
         self.count_all_created_squad += 1
@@ -2523,7 +2681,7 @@ class SquadSettings(object):
             "Squad Is Support": support,
             "Random Choice": random_choice,
             "Random Spawn": random_spawn,
-            "Color": {"Id": "#ffffff", "rgb": (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))},
+            "Color": {"rgb": (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))},
             "Wave": CurrentWave["Name"]
         }
 
@@ -2541,8 +2699,7 @@ class SquadSettings(object):
     def ColorUpdate(self, Settings):
         try:
             self.OperatingButtons["colorSquad"].setStyleSheet(
-                f'background-color: rgb({Settings["Color"]["rgb"][0]}, {Settings["Color"]["rgb"][1]}, {Settings["Color"]["rgb"][2]});border-radius: 3px;'
-            )
+                f'background-color: rgb({Settings["Color"]["rgb"][0]}, {Settings["Color"]["rgb"][1]}, {Settings["Color"]["rgb"][2]});border-radius: 3px;')
         except KeyError as e:
             print(f"[Debug] Ошибка обновления цвета: {e}")
 
@@ -2591,11 +2748,12 @@ class SquadSettings(object):
             self.SquadList[squadName]["InSquad"].remove(mersenary)
 
     def clearSquad(self):
+        return
         to_remove = [item for item, squad in self.SquadList.items() if len(squad["InSquad"]) == 0]
         for item in to_remove:
-            self.SquadList.pop(item, None)
+            self.SquadList.pop(item)
             if "Squad" in CurrentWave and item in CurrentWave["Squad"]:
-                CurrentWave["Squad"].pop(item, None)
+                CurrentWave["Squad"].pop(item)
                 
         #for key in ["WaitForAll_spawn_text", "WaitForAll_dead_text", "Squad Name"]:
         #    if key in self.OperatingButtons:
@@ -2790,7 +2948,22 @@ class Mercenary(object):
             return atrWeapon
 
         now_atr = None
-        for item, atr in _template["ItemAttributes"].items():
+        items_with_atr = {}
+        items_atr = _template["ItemAttributes"]
+        if isinstance(items_atr, dict):
+            items_with_atr = items_atr
+        elif isinstance(items_atr, list):
+            # Convert list of dictionaries to a single dictionary
+            items_with_atr = {}
+            for item in items_atr:
+                item_name = item["ItemName"]
+                # Remove ItemName and copy remaining attributes
+                attrs = item.copy()
+                del attrs["ItemName"]
+                items_with_atr[item_name] = attrs
+                
+        print(items_with_atr.items())
+        for item, atr in items_with_atr.items():
             if item == "ItemName" and atr not in atrWeapon:
                 atrWeapon[atr] = {"Attributes": {}}
                 now_atr = atr
@@ -2812,7 +2985,7 @@ class Mercenary(object):
                         find_weapon_type(_template["Class"].title(), weapon_type)
 
             elif now_atr:
-                lib = atribute_libary.Atribute
+                lib = atribute_libary.Atribute.copy()
                 if item in lib:
                     atrWeapon[now_atr]["Attributes"][item] = lib[item]
                     atrWeapon[now_atr]["Attributes"][item]["Value"] = atr
@@ -2820,17 +2993,41 @@ class Mercenary(object):
         return atrWeapon
     
     def change_to_template(self, templateNameOrg : str, cosmetics : list = [], tags : list = []):
-        templateName = f'T_TFBot_{templateNameOrg.replace("T_TFBot_", "")}'
+        templateName = templateNameOrg
+        templateLib = TemplateLibary.getAllTemplates()
         
-        if len(templateName) <= 0 or templateName not in Template:
+        if len(templateName) <= 0 or templateName not in templateLib:
             return
         
-        _template = Template[templateName]
+        _template = templateLib[templateName]
+        
         self.stat = {}
+        
+        if   _template["Class"] == "Scout":         className = 0
+        elif _template["Class"] == "Soldier":       className = 1
+        elif _template["Class"] == "Pyro":          className = 2
+        elif _template["Class"] == "Demoman":       className = 3
+        elif _template["Class"] == "Heavyweapons":  className = 4
+        elif _template["Class"] == "Engineer":      className = 5
+        elif _template["Class"] == "Medic":         className = 6
+        elif _template["Class"] == "Sniper":        className = 7
+        elif _template["Class"] == "Spy":           className = 8
+        else: className = 0
         
         if "name" not in _template:
             _template["name"] = _template["Class"]
-        
+            
+        if "EventChangeAttributes" in _template:
+            cache_class_name = _template["Class"]
+            cache_name = _template.get("Name", cache_class_name)
+            cache_class_icon = _template.get("ClassIcon", None)
+            
+            _template = _template["EventChangeAttributes"]["Default"]
+            
+            _template["Class"] = cache_class_name
+            _template["name"] = cache_name
+            _template["ClassIcon"] = cache_class_icon
+                 
         if "Scale" not in _template:
             _template["Scale"] = 1
             
@@ -2844,8 +3041,8 @@ class Mercenary(object):
             _template["WeaponRestrictions"] = "None"
         if "Behavior" not in _template:
             _template["Behavior"] = 0
-            
-        if _template["Skill"] == "Easy":
+        
+        if "Skill" not in _template or _template["Skill"] == "Easy":
             skill = 0
         elif _template["Skill"] == "Normal":
             skill = 1
@@ -2853,8 +3050,9 @@ class Mercenary(object):
             skill = 2
         elif _template["Skill"] == "Expert":
             skill = 3
-        else: skill = 0
-        
+        else:
+            skill = 0
+            
         if "WeaponRestrictions" not in _template:
             WeaponRestrictions = 0
         elif _template["WeaponRestrictions"] == "PrimaryOnly":
@@ -2865,27 +3063,18 @@ class Mercenary(object):
             WeaponRestrictions = 3
         else:
             WeaponRestrictions = 0
-        
-        if   _template["Class"] == "Scout":         className = 0
-        elif _template["Class"] == "Soldier":       className = 1
-        elif _template["Class"] == "Pyro":          className = 2
-        elif _template["Class"] == "Demoman":       className = 3
-        elif _template["Class"] == "Heavy":         className = 4
-        elif _template["Class"] == "Engineer":      className = 5
-        elif _template["Class"] == "Medic":         className = 6
-        elif _template["Class"] == "Sniper":        className = 7
-        elif _template["Class"] == "Spy":           className = 8
-        else:className = 0
-        
+    
         atrbutes = {}
-        for Atribute in _template["CharacterAttributes"]:
-            if Atribute.lower() in atribute_libary.Atribute:
-                atr = atribute_libary.Atribute[Atribute]
-                atr["Value"] = _template["CharacterAttributes"][Atribute]
-                atrbutes[atr["Name"]] = atr
+        if "CharacterAttributes" in _template:
+            for Atribute in _template["CharacterAttributes"]:
+                if Atribute.lower() in atribute_libary.Atribute:
+                    atr = atribute_libary.Atribute.copy()[Atribute]
+                    atr["Value"] = _template["CharacterAttributes"][Atribute]
+                    atrbutes[atr["Name"]] = atr
 
         if "ItemAttributes" in _template and "ItemName" in _template["ItemAttributes"]:
-            weapon_data = weapons_libary.find_weapon_info(_template["ItemAttributes"]["ItemName"].title())
+            weapon_name = _template["ItemAttributes"]["ItemName"].title()
+            weapon_data = weapons_libary.find_weapon_info(weapon_name)
         else:
             weapon_data = None
             
@@ -2901,20 +3090,17 @@ class Mercenary(object):
                 Attributes_secondary = get_weapon_atr
             elif weapon_data["Type"] == "Melee":
                 Attributes_melee = get_weapon_atr
-
-        Primary =   WeaponData(Class=_template["Class"].title(), WeaponType="Primary",      weaponName=next(iter(weapons_libary.Weapon_Libary[_template["Class"].title()]["Primary"])), attrubutes =   Attributes_primary)
-        Secondary = WeaponData(Class=_template["Class"].title(), WeaponType="Secondary",    weaponName=next(iter(weapons_libary.Weapon_Libary[_template["Class"].title()]["Secondary"])), attrubutes = Attributes_secondary)
-        Melee =     WeaponData(Class=_template["Class"].title(), WeaponType="Melee",        weaponName=next(iter(weapons_libary.Weapon_Libary[_template["Class"].title()]["Melee"])), attrubutes =     Attributes_melee)
+                
+        classNameWeapon = _template["Class"].title() if _template["Class"].title() != "Heavy" else "Heavyweapons"
+        Primary =   WeaponData(Class=classNameWeapon, WeaponType="Primary",  weaponName=next(iter(weapons_libary.Weapon_Libary[classNameWeapon]["Primary"])), attrubutes =   Attributes_primary)
+        Secondary = WeaponData(Class=classNameWeapon, WeaponType="Secondary",weaponName=next(iter(weapons_libary.Weapon_Libary[classNameWeapon]["Secondary"])), attrubutes = Attributes_secondary)
+        Melee =     WeaponData(Class=classNameWeapon, WeaponType="Melee",    weaponName=next(iter(weapons_libary.Weapon_Libary[classNameWeapon]["Melee"])), attrubutes =     Attributes_melee)
 
         cosmeticslist = []
-        if "Items" in _template:
-            for item in _template["Items"]:
-                if item == "None" or item == None or item == "NoItem":
-                    continue
-                item_title = item.title()
-                
-                weapon_find = weapons_libary.find_weapon_info(item_title)
-                index_name = parser.get_item_by_name(item_title)
+        if "Item" in _template:
+            items = _template["Item"]
+            if isinstance(items, str):
+                weapon_find = weapons_libary.find_weapon_info(items)
                 
                 if weapon_find != None:
                     weapon_data = WeaponData(
@@ -2929,9 +3115,34 @@ class Mercenary(object):
                         Secondary = weapon_data
                     elif weapon_find["Type"] == "Melee":
                         Melee = weapon_data
-                
-                elif index_name != None:
-                    cosmeticslist.append(index_name[0])
+                else:
+                    index_name = parser.get_item_by_name(items)
+                    if index_name:
+                        cosmeticslist.append(index_name[0])
+            else:
+                for item in _template["Item"]:
+                    if item == "None" or item == None:
+                        continue
+                    item_title = item.title()
+                    weapon_find = weapons_libary.find_weapon_info(item_title)
+                    
+                    if weapon_find != None:
+                        weapon_data = WeaponData(
+                            Class=weapon_find["Class"],
+                            WeaponType=weapon_find["Type"],
+                            weaponName=weapon_find["name"],
+                            attrubutes=self.process_item_attributes(_template)
+                        )
+                        if weapon_find["Type"] == "Primary":
+                            Primary = weapon_data
+                        elif weapon_find["Type"] == "Secondary":
+                            Secondary = weapon_data
+                        elif weapon_find["Type"] == "Melee":
+                            Melee = weapon_data
+                    else:
+                        index_name = parser.get_item_by_name(item_title)
+                        if index_name:
+                            cosmeticslist.append(index_name[0])
 
         cosmeticslist += cosmetics
         
@@ -2942,22 +3153,31 @@ class Mercenary(object):
                 TagList += tags
         else:
             TagList = tags
-            
+        
+        fixed_class_name = "Heavyweapons" if _template["Class"].title() == "Heavy" else _template["Class"].title()
+        
+        default_data = default_stat.Mercenary[fixed_class_name]   
         ico = "None"
-        if "ClassIcon" in _template:
+        if "ClassIcon" in _template and _template["ClassIcon"] is not None:
             ico = _template["ClassIcon"]
-
+        else:
+            ico = default_data["Icon"]
+        
+        if "Name" not in _template:
+            if "name" in _template:
+                _template["Name"] = _template["name"]
+        
         self.stat = {
-            "Name" : str(_template["name"]).title(),
-            "Template" : templateNameOrg.title(),
+            "Name" : str(_template["Name"]).title(),
+            "Template" : templateNameOrg,
             "Class" : className,
-            "Class Name" : _template["Class"].title(),
+            "Class Name" : str(_template["Class"]).title(),
             "Icon" : ico,
-            "Health" : int(_template["Health"]),
-            "Scale" : _template["Scale"],
-            "MaxVision" : int(_template["MaxVision"]),
-            "AutoJump Min" : int(_template["AutoJumpMin"]),
-            "AutoJump Max" : int(_template["AutoJumpMax"]),
+            "Health" : int(_template.get("Health", default_data["Health"])),
+            "Scale" : _template.get("Scale", default_data["Scale"]),
+            "MaxVision" : int(_template.get("MaxVision", default_data["MaxVision"])),
+            "AutoJump Min" : int(_template.get("AutoJumpMin", default_data["AutoJump Min"])),
+            "AutoJump Max" : int(_template.get("AutoJumpMax", default_data["AutoJump Max"])),
             "Tag" : TagList,
             "Skill" : skill,
             "Weapon Restriction" : WeaponRestrictions,
@@ -2975,9 +3195,10 @@ class Mercenary(object):
             "Custom Parametrs" : """""",
 
             "Squad" : self.SquadName,
-            "power" : 2 *  (int(_template["Health"]) / 1000),
+            "power" : 2 *  (int(_template.get("Health", default_data["Health"])) / 1000),
             "model" : default_stat.Mercenary[_template["Class"].title()]["Model"]
-        }  
+        }
+
         self.open()
         
     def change_class(self, toClass : str = "Scout", isGenerated = False):
@@ -3063,11 +3284,6 @@ class Mercenary(object):
         
     def open(self, isGenerate = False):
         SquadSettingsGlobal.OpenSquad(self.stat["Squad"])
-        try:
-            global buttonMercenaryActive
-            buttonMercenaryActive = self.ui_components["Button"]
-        except:
-            pass
         
         general_icon = General_Information_Robot["Stats_Icon_comboBox Text"]
         general_icon.clear()
@@ -3085,22 +3301,7 @@ class Mercenary(object):
             icon1 = QtGui.QIcon()
             icon1.addPixmap(QtGui.QPixmap(f"{_systemPath.get(default_stat.Mercenary[item]['Icon'])}" ), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
             classIcons.addItem(icon1, item.replace("Leaderboard_", "").replace("leaderboard_", "").replace("class_", ""))
-        
-        classTemaplte = General_Information_Robot["Stats_Template"]
-        classTemaplte.clear()
-        try: 
-            classTemaplte.disconnect()
-        except:
-            pass
-        for item in Template:
-            icon1 = QtGui.QIcon()
-            if "ClassIcon" in Template[item]:
-                iconType = Template[item]['ClassIcon']
-                icon1.addPixmap(QtGui.QPixmap(f"{_systemPath.get(iconType)}" ), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
-                classTemaplte.addItem(icon1, item.replace("Leaderboard_", "").replace("leaderboard_", "").replace("class_", "").replace("T_TFBot_", ""))
-            else:
-                classTemaplte.addItem(item.replace("T_TFBot_", ""))
-        
+                
         for item in range(general_icon.count()):
             if general_icon.itemText(item) in self.stat["Icon"]:
                 general_icon.setCurrentIndex(item)
@@ -3140,13 +3341,15 @@ class Mercenary(object):
         try:
             General_Information_Robot["Stats_WeaponRestriction_comboBox Text"].setCurrentIndex(self.stat["Weapon Restriction"])
         except:pass
-        classIcons.setCurrentIndex(self.stat["Class"])
         
+        classIcons.setCurrentIndex(self.stat["Class"])
         classIcons.currentIndexChanged.connect(lambda x: (self.change_class(classIcons.currentText().title())))
         
+        classTemplate = General_Information_Robot["Stats_Template"]
+        classTemplate.disconnect()
         if len(str(self.stat["Template"])) > 0:
-            classTemaplte.setCurrentIndex(classTemaplte.findText(self.stat["Template"]))
-        classTemaplte.currentIndexChanged.connect(lambda x: self.change_to_template(classTemaplte.currentText()))
+            classTemplate.setCurrentIndex(classTemplate.findText(self.stat["Template"]))
+        classTemplate.currentIndexChanged.connect(lambda x: self.change_to_template(classTemplate.currentText()))
         
         self.rebuild_cosmetics()
         
@@ -3338,7 +3541,7 @@ class Atributes:
     global Mercenary_now
     def __init__(self, stat = None, scrollAreaWidgetContents_5 = None, verticalLayout_4 = None, horizontalLayout_2 = None):
         
-        self.atribut = atribute_libary.Atribute
+        self.atribut = atribute_libary.Atribute.copy()
         
         self.stat = stat
         self.scrollAreaWidgetContents_5 = scrollAreaWidgetContents_5
@@ -4103,9 +4306,14 @@ class cosmetic_list:
 
                     if stat:
                         if "ready_icon" not in stat:
-                            index = parser.get_item_by_name(stat.get("name"))
-                            stat["ready_icon"] = get_icon_from_game(index[0])
-                        
+                            if item_key.isdigit():
+                                stat["ready_icon"] = get_icon_from_game(item_key)
+                                stat["index"] = item_key
+                            else:
+                                index = parser.get_item_by_name(stat.get("name"))
+                                stat["ready_icon"] = get_icon_from_game(index[0])
+                                stat["index"] = index[0]
+                                
                         self.AddButton(stat)
                     else:
                         print(f"Warning: Could not find cosmetic item with key {item_key}")
@@ -4114,9 +4322,13 @@ class cosmetic_list:
                     continue
         else:
             if "ready_icon" not in list_items:
-                index = parser.get_item_by_name(list_items.get("name"))
-                list_items["ready_icon"] = get_icon_from_game(index[0])
-                
+                if item_key.isdigit():
+                    stat["ready_icon"] = get_icon_from_game(item_key)
+                    stat["index"] = item_key
+                else:
+                    index = parser.get_item_by_name(stat.get("name"))
+                    stat["ready_icon"] = get_icon_from_game(index[0])
+                    stat["index"] = index[0]
             self.AddButton(list_items)
             
     def AddButton(self, stat = None):
@@ -4195,6 +4407,7 @@ class cosmetic_list:
                                                "color: rgb(185, 45, 43);")
             DeleteCosmeticButton.setObjectName("DeleteCosmeticButton")
             DeleteCosmeticButton.setText("-")
+            
             DeleteCosmeticButton.clicked.connect(lambda hui: self.DeleteCosmetic(stat, Item_2))
             
         # Оптимизированная логика размещения элементов в сетке
@@ -4215,41 +4428,22 @@ class cosmetic_list:
         self.grid.addItem(self.spacer, self.countButton + 1, 0)
     
     def filtered_items(self):
+        name = Mercenary_now.stat['Class Name'].lower()
+        fixed_name_class = "heavy" if name == "heavyweapons" else name
         criteria = {
-            'used_by_classes': Mercenary_now.stat['Class Name'].lower(),
-            'equip_region' : "hat",
-                              #"whole_hat",
-                              #"face", 
-                              #"glasses", 
-                              #"lenses", 
-                              #"pants", 
-                              #"beard", 
-                              #"shirt", 
-                              #"medal", 
-                              #"arms", 
-                              #"back", 
-                              #"feet", 
-                              #"necklace", 
-                              #"grenades",
-                              #"arm_tattoos", 
-                              #"flair", 
-                              #"head_skin", 
-                              #"ears", 
-                              #"left_shoulder", 
-                              #"belt_misc", 
-                              #"disconnected_floating_item", 
-                              #"zombie_body", 
-                              #"sleeves", 
-                              #"right_shoulder"],	
+            'used_by_classes': fixed_name_class,
+            'equip_region' : "hat",	
         }
+
         return parser.filter_items(criteria)
         
     def DeleteCosmetic(self, stat, Item_2):
         self.allButtons.remove(Item_2)
         Item_2.deleteLater()
-        if stat["name"] in Mercenary_now.stat["Cosmetics"]:
-            Mercenary_now.stat["Cosmetics"].remove(stat["name"])
-
+        if stat["index"] in Mercenary_now.stat["Cosmetics"]:
+            Mercenary_now.stat["Cosmetics"].remove(stat["index"])
+            Mercenary_now.rebuild_cosmetics()
+            
 class WeaponData(object):
     def __init__(self, Class = None, WeaponType = None, weaponName = None, attrubutes = {}):
         if Class == None:
@@ -4711,7 +4905,7 @@ class WeaponsAtributeMenu(QtWidgets.QMainWindow):
         self.AtributesInterface()
 
     def initAtr(self):
-        self.atribut = atribute_libary.Atribute
+        self.atribut = atribute_libary.Atribute.copy()
         
         self.ListButtonAccepted = []
         self.spacer_2 = None
@@ -5154,7 +5348,7 @@ class Robot:
             "Soldier": 200,
             "Pyro": 175,
             "Demoman": 175,
-            "Heavy": 300,
+            "Heavyweapons": 300,
             "Engineer": 125,
             "Medic": 150,
             "Sniper": 125,
@@ -5173,12 +5367,12 @@ class Robot:
         
         self.giant = self.size > 1.25
         if random.random() < 0.15 and self.size > 1.25 and self.can_be_giant:
-            self.health = self.calculate_health(robot_default_health.get(robot_type, 100) * 10)
+            self.health = self.calculate_health(robot_default_health.get(self.robot_type, 100) * 10)
         else:
-            self.health = self.calculate_health(robot_default_health.get(robot_type, 100))
+            self.health = self.calculate_health(robot_default_health.get(self.robot_type, 100))
             
-        if self.robot_type not in ["Mini Sentry Buster", "Sentry Buster"]:
-            self.cosmetics = self.assign_cosmetics(max_cosmetics)
+        if self.robot_type not in ["Mini Sentry Buster", "Sentry Buster", "Tank"]:
+            self.cosmetics = self.assign_cosmetics(max_cosmetics, self.robot_type)
             self.weapons = self.assign_weapons()
             self.weapontype = self.weapons["Type"]
             self.character_attributes = self.assign_attributes(max_attributes)
@@ -5256,18 +5450,18 @@ class Robot:
         self.power += power_adjustment
         return attributes
 
-    def assign_cosmetics(self, max_cosmetics):
+    def assign_cosmetics(self, max_cosmetics, className):
         if self.robot_type == "Tank":
             return []
 
-        available_cosmetics = [
-            cosmetic for cosmetic in Cosmetic.values()
-            if "Class" in cosmetic and (
-                isinstance(cosmetic["Class"], str) and self.robot_type == cosmetic["Class"]
-                or isinstance(cosmetic["Class"], list) and self.robot_type in cosmetic["Class"]
-            )
-        ]
-        return random.sample(available_cosmetics, min(len(available_cosmetics), random.randint(1, max_cosmetics)))
+        name = className.lower()
+        fixed_name_class = "heavy" if name == "heavyweapons" else name
+        criteria = {
+            'used_by_classes': fixed_name_class,
+            'equip_region' : "hat",	
+        }
+        items = parser.filter_items(criteria)
+        return random.sample(items.keys(), min(len(items.keys()), random.randint(1, max_cosmetics)))
 
     def assign_weapons(self):
         if self.robot_type == "Tank":
@@ -5278,21 +5472,21 @@ class Robot:
             }
 
         banned_to_type_weapon = [
-            "The Buff Banner", 
-            "Gunboats", 
-            "The Battalion's Backup", 
-            "The Concheror",
-            "The Mantreads",
-            "Festive Buff Banner",
-            "The B.A.S.E. Jumper",
-            "Thermal Thruster",
-            "The Bootlegger",
-            "Ali Baba's Wee Booties",
-            "The Chargin' Targe",
-            "The Tide Turner",
-            "The Razorback",
-            "Darwin's Danger Shield",
-            "Cozy Camper",
+            #"The Buff Banner", 
+            #"Gunboats", 
+            #"The Battalion's Backup", 
+            #"The Concheror",
+            #"The Mantreads",
+            #"Festive Buff Banner",
+            #"The B.A.S.E. Jumper",
+            #"Thermal Thruster",
+            #"The Bootlegger",
+            #"Ali Baba's Wee Booties",
+            #"The Chargin' Targe",
+            #"The Tide Turner",
+            #"The Razorback",
+            #"Darwin's Danger Shield",
+            #"Cozy Camper",
         ]
         banned_to_types_weapon = ["Clock", "PDA"]  
         
@@ -5316,6 +5510,7 @@ class Robot:
         }
 
     def assign_item_attributes(self):
+        Atribute = atribute_libary.Atribute.copy()  # Копируем атрибуты
         possible_attributes = list(Atribute.keys())
         selected_attributes = random.sample(possible_attributes, int(random.randint(1, 3) * self.progress_factor))  # От 1 до 3 атрибутов
         item_attributes = []  # Список для хранения атрибутов
@@ -5341,6 +5536,7 @@ class Robot:
 
     def assign_attributes(self, max_attributes):
         attributes = {}  # Инициализируем список
+        Atribute = atribute_libary.Atribute.copy()
         possible_attributes = list(Atribute.keys())
         selected_attributes = random.sample(possible_attributes, int(random.randint(1, max_attributes)))  # От 1 до 3 атрибутов
 
@@ -5367,7 +5563,7 @@ class Robot:
     
         base_power = {
             "Scout": 0.1, "Soldier": 0.25, "Pyro": 0.2, "Demoman": 0.2,
-            "Heavy": 0.45, "Engineer": 0.35, "Medic": 0.15, "Sniper": 0.12,
+            "Heavyweapons": 0.45, "Engineer": 0.35, "Medic": 0.15, "Sniper": 0.12,
             "Spy": 0.12, "Tank": 4.0, "Sentry Buster": 0.5, "Mini Sentry Buster": 0.3
         }
         power += base_power.get(self.robot_type, 0.1)
@@ -5406,7 +5602,7 @@ class Mission_Support:
             "Soldier":  {"size": 1.0, "speed": 1,  "skill": 1, "health": 200},
             "Pyro":     {"size": 1.0, "speed": 1,  "skill": 1, "health": 175},
             "Demoman":  {"size": 1.0, "speed": 1,  "skill": 1, "health": 175},
-            "Heavy":    {"size": 1.0, "speed": 1,  "skill": 1, "health": 300},
+            "Heavyweapons":{"size": 1.0, "speed": 1,  "skill": 1, "health": 300},
             "Engineer": {"size": 1.0, "speed": 1,  "skill": 1, "health": 125},
             "Medic":    {"size": 1.0, "speed": 1,  "skill": 1, "health": 150},
             "Sniper":   {"size": 1.0, "speed": 1,  "skill": 1, "health": 125},
@@ -5420,41 +5616,51 @@ class Mission_Support:
         # Restrict Chiefs and Majors to higher difficulties and later waves
         if self.difficulty < 3 or wave_number < self.waves - 2:
             is_chief = False
-
+        template_lib = TemplateLibary.getAllTemplates()
         templates = [
-            template for template in Template.values()
-            if template.get("Class") == robot_type and
+            template for template in template_lib
+            if template_lib[template].get("Class") == robot_type and
             (
-                "Chief" in template.get("Name", "") or
-                "Major" in template.get("Name", "") or
-                "Sergeant" in template.get("Name", "") or
-                "Captain" in template.get("Name", "") or
-                "Sir" in template.get("Name", "")
+                "Chief" in template_lib[template].get("Name", "") or
+                "Major" in template_lib[template].get("Name", "") or
+                "Sergeant" in template_lib[template].get("Name", "") or
+                "Captain" in template_lib[template].get("Name", "") or
+                "Sir" in template_lib[template].get("Name", "")
                 if is_chief else
-                "Chief" not in template.get("Name", "") and
-                "Major" not in template.get("Name", "") and
-                "Sergeant" not in template.get("Name", "") and
-                "Captain" not in template.get("Name", "") and
-                "Sir" not in template.get("Name", "")
+                "Chief" not in template_lib[template].get("Name", "") and
+                "Major" not in template_lib[template].get("Name", "") and
+                "Sergeant" not in template_lib[template].get("Name", "") and
+                "Captain" not in template_lib[template].get("Name", "") and
+                "Sir" not in template_lib[template].get("Name", "")
             ) and
-            template.get("Name") not in self.used_templates
+            template_lib[template].get("Name") not in self.used_templates
         ]
         if not templates or (is_chief and existing_chief):
             return None
 
         if giant_health_range:
-            templates = sorted(templates, key=lambda t: abs(t.get("Health", 0) - giant_health_range))
-
+            templates = sorted(templates, key = lambda bot: abs(float(template_lib[bot].get("Health", 0)) - giant_health_range))
+            
         chance = 0.2 if is_chief else 0.1  # Reduced chance for Chief, Major, and Sergeant robots
         
         chosen_template = random.choices(templates, weights=[chance for _ in templates], k=1)[0]
+        name_template = chosen_template
+        
+        chosen_template = template_lib[chosen_template]
         self.used_templates.append(chosen_template.get("Name"))
+        
         if is_chief:
             chosen_template["Power"] = 10 # Chief robots have fixed Power of 5
         else:
             chosen_template["Power"] = 3
-        # Выводим только имя блока
-        return chosen_template
+        chosen_template["Template"] = name_template
+
+        if chosen_template is not None:
+            # Выводим только имя блока
+            return name_template, chosen_template
+        else:
+            return None, None
+
     def process_weapon(self, robot, weapon_type):
         
         type_weapon = {0: "Primary", 1: "Primary", 2 : "Secondary", 3: "Melee"}
@@ -5464,11 +5670,10 @@ class Mission_Support:
             if not isinstance(atr, list):
                 atr = []
                 print(f"[ERROR] Unexpected structure for robot.weapons['ItemAttributes']")
-            
             weapon = WeaponData(
                 Class =  robot.robot_type,
                 WeaponType = type_weapon.get(weapon_type, "Primary"),
-                weaponName = robot.weapons["Name"]["Name"],
+                weaponName = robot.weapons["Name"]["name"],
                 attrubutes = atr
             )
         else:
@@ -5618,21 +5823,20 @@ class Mission_Support:
                             self.difficulty >= 4 and (random.random() < 0.22 if wave_number < 3 else random.random() < 0.33) and 
                             (chief_count - 1 < settings_robot["max_chief"] if settings_robot["max_chief"] >= 0 else True)
                         )
-                        chosen_template = self.choose_template_robot(robot_type, is_chief, standard_health, existing_chief, wave_number)
-
-                        if chosen_template:
-                            isFinded = find_robot_by_name(chosen_template["Name"])
-                            if isFinded:
-                                if is_chief:
-                                    existing_chief = True
-                                    chief_count += 1
-                                    #print(f"Осторожно! Добавлен Шеф! {chosen_template['Name']}")
-                                else:
-                                    giant_count += 1
-                                    #print(f"Добавлен гигант : {isFinded}")
-                                                        
-                                class_count[robot_type] += 1
-                                break
+                        
+                        name_template, chosen_template = self.choose_template_robot(robot_type, is_chief, standard_health, existing_chief, wave_number)
+                        
+                        if chosen_template is not None:
+                            if is_chief:
+                                existing_chief = True
+                                chief_count += 1
+                                print(f"Осторожно! Добавлен Шеф! {name_template}")
+                            else:
+                                giant_count += 1
+                                print(f"Добавлен гигант : {name_template}")
+                                                    
+                            class_count[robot_type] += 1
+                            break
                     else:
                         chosen_template = None
                         break
@@ -5823,7 +6027,7 @@ class Mission_Support:
             "Soldier": 1,
             "Pyro": 2,
             "Demoman": 3,
-            "Heavy": 4,
+            "Heavyweapons": 4,
             "Engineer": 5,
             "Medic": 6,
             "Sniper": 7,
@@ -5831,12 +6035,18 @@ class Mission_Support:
         }
         robot_tag = [tag for tag in robot_path["robot_tag"]] if robot_path["robot_tag"] != None else []
         
+        icon_name_fixed = f'leaderboard_class_{robot.robot_type.replace("Heavyweapons", "Heavy").replace("Demoman", "Demo").lower()}'
+        
+        template_accept = ""
+        if chosen_template != None and "Template" in chosen_template:
+            template_accept = chosen_template["Template"]
+                    
         create_stat = {
             "Name": f"Giant {robot.robot_type.title()}" if (robot.size > 1.25 and robot.health > 700) else robot.robot_type,
-            "Template": "" if chosen_template is None else chosen_template["Name"],
+            "Template": template_accept,
             "Class": robot_type_to_index.get(robot.robot_type, 0),
             "Class Name" : robot.robot_type,
-            "Icon" :       Icons_Archive[f"leaderboard_class_{'demo' if robot.robot_type.lower() == 'demoman' else robot.robot_type.lower()}"],
+            "Icon" :       Icons_Archive[icon_name_fixed],
             "Skill": robot.skill,
             "Health": robot.health,
             "Scale": robot.size,
@@ -5845,7 +6055,7 @@ class Mission_Support:
             "AutoJump Max": 0,
             "Tag": robot_tag or [],
             "Behavior": 0,
-            "Cosmetics": [{'Name': item["Name"], 'Icon': item["Icon"]} for item in robot.cosmetics],
+            "Cosmetics": robot.cosmetics,
             "Primary Weapon": self.process_weapon(robot, weapon_type=1),
             "Secondary Weapons": self.process_weapon(robot, weapon_type=2),
             "Melee": self.process_weapon(robot, weapon_type=3),
@@ -5859,8 +6069,10 @@ class Mission_Support:
         }
         mercenary = Create_Mercenary_From_Save(list=create_stat, squadName=squadName, isGenerated=True)
         
-        if chosen_template and find_robot_by_name(chosen_template["Name"]) != None and robot.robot_type != "Tank":
-            mercenary.change_to_template(find_robot_by_name(chosen_template["Name"]), robot.cosmetics, robot_tag or [])
+        template_lib = TemplateLibary.getAllTemplates()
+        
+        if chosen_template is not None and template_lib.get(template_accept, None) != None and robot.robot_type != "Tank":
+            mercenary.change_to_template(template_accept, robot.cosmetics, robot_tag or [])
         else:
             mercenary.change_class(robot.robot_type, True)
             mercenary.Set_Stat(create_stat)
@@ -6792,8 +7004,8 @@ class General(object):
         self.buttonsGlobal = {}
         self.FinalCode = ""
 
-    def bindExportButton(self, button):
-        button.clicked.connect(self.createWavePop)
+    def bindExportButton(self, button, mainWindow):
+        button.clicked.connect(lambda create: self.createWavePop(mainWindow))
 
     def buttonAdd(self, name, param):
         self.buttonsGlobal[name] = param
@@ -6903,7 +7115,7 @@ WaveSchedule
                         if pers.stat["Class"] == 9 or className == "Tank":
                             Mers += self.generateTank(pers, wave["Squad"][squad_name]["SpawnPostion"])
                         elif pers.stat["Template"]:
-                            Mers += self.generateTemplate(pers)
+                            Mers += self.generateTemplate(pers, WeaponRestrictions, Skill, className)
                         else:
                             Mers += self.generateTFBot(pers, Skill, WeaponRestrictions, className)
                     
@@ -6911,9 +7123,32 @@ WaveSchedule
             Mers += "\n    }"
         return Mers
     
-    def generateTemplate(self, pers):
-        bot = (f"\n                TFBot\n                {{\n                    Template {pers.stat['Template']}\n                ")
+    def generateTemplate(self, pers, WeaponRestrictions, Skill, className):
+        bot = (f"\n                TFBot\n                {{\n                    Template  {pers.stat['Template']}\n                ")
+        
+        template_libary = TemplateLibary.getAllTemplates()[pers.stat['Template']]
 
+        if "Name" in template_libary and pers.stat["Name"] != template_libary["Name"]:
+            bot += f"\n                    Name  {pers.stat['Name']}"
+            
+        if "Icon" in template_libary and pers.stat["Icon"] != template_libary["ClassIcon"]:
+            bot += f"\n                    ClassIcon  {pers.stat['Icon']}"
+
+        if "Health" in template_libary and pers.stat["Health"] != template_libary["Health"]:
+            bot += f"\n                    Health  {pers.stat['Health']}"
+
+        if "Class" in template_libary and className != template_libary["Class"]:
+            bot += f"\n                    Class  {className}"
+
+        if "Skill" in template_libary and Skill != template_libary["Skill"]:
+            bot += f"\n                    Skill  {Skill}"
+
+        if "Scale" in template_libary and pers.stat["Scale"] != template_libary["Scale"]:
+            bot += f"\n                    Scale  {pers.stat['Scale']}"
+
+        if WeaponRestrictions != "All":
+            bot += f"\n				    WeaponRestrictions  {WeaponRestrictions}"
+            
         _behavior = ["None", "Push", "Iddler", "Mobber"][pers.stat["Behavior"]]
         if _behavior != "None":
             bot += f"\n				    BehaviorModifiers  {_behavior}"
@@ -7050,13 +7285,22 @@ WaveSchedule
             item_name = weapon.get().get("Name", "Unknown Weapon")
             attributes = weapon.get().get("Attributes", {})
             custom = weapon.get().get("Custom", {})
-            weapons_data += f'\n                    Item    "{item_name}"'
+            info_item = weapons_libary.find_weapon_info(item_name)
+            Weapon_Libary = weapons_libary.Weapon_Libary
+            first_key = next(iter(Weapon_Libary[info_item["Class"]][info_item["Type"]]))
+            isDefaultWeapon = info_item is not None and Weapon_Libary[info_item["Class"]][info_item["Type"]][first_key]["name"] == item_name           
+            
+            if isDefaultWeapon == False:
+                weapons_data += f'\n                    Item    "{item_name}"'
 
             if attributes or len(custom) > 0:
                 # Формируем блок ItemAttributes
                 weapons_data += "\n                    ItemAttributes"
                 weapons_data += "\n                    {"
-                weapons_data += f'\n                        ItemName        "{item_name}"'
+                if isDefaultWeapon:
+                    weapons_data += f'\n                        ItemName        "{weapon.get().get("ID", item_name)}"'
+                else:
+                    weapons_data += f'\n                        ItemName        "{item_name}"'
                 
                 if len(custom) > 0:  # Проверяем наличие пользовательских данных
                     weapons_data += f"\n{custom}\n"
@@ -7089,7 +7333,10 @@ WaveSchedule
             
         return allText
 
-    def createWavePop(self):
+    def createWavePop(self, window : QtWidgets.QMainWindow):
+        if window.isActiveWindow() == False: # Check active window
+            return
+        
         SquadSettingsGlobal.clearSquad()
                 
         self.FinalCode = self.createMission()
@@ -7150,6 +7397,332 @@ class Button_Cosmetic_Atribute:
         #if Addition_interface is not None:
         #    Addition_interface.close()
         #    Addition_interface = None
+
+
+class AutoChangeTracker(QtCore.QObject):
+    """Автоматическое отслеживание изменений в виджетах"""
+    
+    def __init__(self, main_window: QtWidgets.QMainWindow):
+        super().__init__()
+        self.main_window = main_window
+        self.is_modified = False
+        self.current_file_path = None
+        self.program_name = "Gray Factory"
+        
+        # Словарь сопоставления типов виджетов и их сигналов
+        self.widget_signals = {
+            QtWidgets.QTextEdit: ['textChanged', 'document().contentsChanged'],
+            QtWidgets.QPlainTextEdit: ['textChanged', 'document().contentsChanged'],
+            QtWidgets.QLineEdit: ['textChanged'],
+            QtWidgets.QSpinBox: ['valueChanged'],
+            QtWidgets.QDoubleSpinBox: ['valueChanged'],
+            QtWidgets.QSlider: ['valueChanged'],
+            QtWidgets.QComboBox: ['currentTextChanged', 'currentIndexChanged'],
+            QtWidgets.QCheckBox: ['toggled'],
+            QtWidgets.QRadioButton: ['toggled'],
+            QtWidgets.QListWidget: ['itemChanged'],
+            QtWidgets.QTreeWidget: ['itemChanged'],
+            QtWidgets.QTableWidget: ['itemChanged'],
+        }
+        
+    def auto_connect(self, parent_widget=None):
+        """Автоматически находит и подключает все виджеты"""
+        if parent_widget is None:
+            parent_widget = self.main_window
+            
+        self.connect_widgets_recursively(parent_widget)
+        self.update_title()
+        
+    def connect_widgets_recursively(self, widget):
+        """Рекурсивно обходит все дочерние виджеты"""
+        # Подключаем текущий виджет
+        self.connect_widget(widget)
+        
+        # Рекурсивно обходим дочерние виджеты
+        for child in widget.findChildren(QtWidgets.QWidget):
+            self.connect_widget(child)
+    
+    def connect_widget(self, widget):
+        """Подключает события к конкретному виджету"""
+        widget_type = type(widget)
+        
+        # Ищем подходящие сигналы для этого типа виджета
+        for registered_type, signals in self.widget_signals.items():
+            if isinstance(widget, registered_type):
+                for signal_name in signals:
+                    try:
+                        signal = self.get_signal_from_path(widget, signal_name)
+                        if signal:
+                            signal.connect(self.mark_as_modified)
+                    except Exception as e:
+                        print(f"Не удалось подключить {signal_name} к {widget_type.__name__}: {e}")
+                break
+    
+    def get_signal_from_path(self, widget, signal_path):
+        """Получает сигнал по строковому пути (например, 'document().contentsChanged')"""
+        try:
+            # Разбираем путь к сигналу
+            parts = signal_path.split('.')
+            current_obj = widget
+            
+            for part in parts[:-1]:  # Все части кроме последней (название сигнала)
+                if part.endswith('()'):  # Это метод
+                    method_name = part[:-2]
+                    current_obj = getattr(current_obj, method_name)()
+                else:  # Это атрибут
+                    current_obj = getattr(current_obj, part)
+            
+            # Последняя часть - это сигнал
+            signal_name = parts[-1]
+            return getattr(current_obj, signal_name)
+            
+        except AttributeError:
+            return None
+    
+    def mark_as_modified(self):
+        """Помечает документ как измененный"""
+        if not self.is_modified:
+            self.is_modified = True
+            self.update_title()
+            
+    def mark_as_saved(self, file_path=None):
+        """Помечает документ как сохраненный"""
+        if file_path:
+            self.current_file_path = file_path
+        self.is_modified = False
+        self.update_title()
+        
+    def update_title(self):
+        """Обновляет заголовок окна"""
+        title = self.program_name
+        global path_project_file
+        
+        if path_project_file is not None:
+            title += f" [{path_project_file}]"
+        elif self.current_file_path:
+            import os
+            title += f" [{os.path.basename(self.current_file_path)}]"
+        else:
+            title += " [Untitled]"
+            
+        if self.is_modified:
+            title += " *"
+            
+        self.main_window.setWindowTitle(title)
+
+class PopFileImporterManager(object):
+    def __init__(self):
+        self.data = None
+    
+    def import_pop_file(self, file_path: str):        
+        self.parse = ValveFormat()
+        self.data = self.parse.parse_file(file_path)
+        
+        if "WaveSchedule" in self.data:
+            self.data = self.data["WaveSchedule"]
+        elif "population" in self.data:
+            self.data = self.data["population"]
+        else:
+            Tk().withdraw()
+            print(f"[ERROR] Not find population or WaveSchedule in {file_path}")
+            messagebox.showerror('Gray Factory', 'Error: Not find population or WaveSchedule! \n' + str(e))
+            Tk().destroy()
+            return
+
+    def loadGlobalSettings(self):
+        if not self.data:
+            return
+        
+        global InitSettingsGlobal
+        info_init_mission = {
+            "money": int(self.data["StartingCurrency"].isnumeric()),
+            "restartTime": int(self.data["RespawnWaveTime"].isnumeric()),
+        }
+        InitSettingsGlobal.SetFromSave(info_init_mission)
+        
+    def loadWave(self):
+        if not self.data:
+            return        
+          
+        global WaveManagerGlobal
+        WaveManagerGlobal.clearAll()
+        self.waveCount = 0
+        global SquadSettingsGlobal
+        for wave_data in self.data.get("Wave", []) or self.data.get("WaveSpawn", []):
+            self.waveCount += 1
+            SquadListData = []
+            #print(json.dumps(wave_data, indent=4, ensure_ascii=False))
+            if "WaveSpawn" in wave_data:
+                SquadListData = self.loadSquads(wave_data.get("WaveSpawn"))
+
+            Wave = {
+                "Name": wave_data.get("Name", f"Wave {self.waveCount}"),
+                "Squad": SquadListData,
+                "Support": [],
+                "Money": wave_data.get("Money"),
+                "Settings": {
+                    "Description":      self.getStringLineFromList(wave_data.get("Description", "")),
+                    "Sound":            self.getStringLineFromList(wave_data.get("Sound", "")),
+                    "StartWaveOutput":  self.getStringLineFromList(wave_data.get("StartWaveOutput", "")),
+                    "InitWaveOutput":   self.getStringLineFromList(wave_data.get("InitWaveOutput", "")),
+                    "DoneOutput":       self.getStringLineFromList(wave_data.get("DoneOutput", "")),
+                    "Custom":           self.getStringLineFromList(wave_data.get("Settings", "")),
+                }
+            }
+            WaveManagerGlobal.AddReadyWave(Wave)
+
+    def loadSquads(self, squads : list) -> list:
+        if not self.data:
+            return
+
+        global SquadSettingsGlobal
+        SquadSettingsGlobal.ClearSettingsSquad()
+        SquadSettingsGlobal.clearSquad()
+        
+        AllSquads = []
+        squad_count = 0
+        for squad in squads:
+            squad_count += 1
+            name = str(squad.get("Name", f"Squad {squad_count}"))
+            SquadSettingsGlobal.CreateSquad( 
+                nameSquad = name,
+                total_squad= int(squad.get("TotalCount", 10)),
+                max_active= int(squad.get("MaxActive", 1)), 
+                squad_spawn=int(squad.get("SpawnCount", 1)),
+                credit_for_squad=int(squad.get("TotalCurrency", 400)), 
+                wait_before_spawn=int(squad.get("WaitBeforeStarting", 400)), 
+                wait_between_spawn=int(squad.get("WaitBetweenSpawnsAfterDeath", 0)),
+                wait_all_spawn=str(squad.get("WaitForAllSpawned", "")), 
+                wait_all_dead=str(squad.get("WaitForAllDead", "")), 
+                where_spawn=str(squad.get("Where", 0)), 
+                support=bool(self.getBoolFromInt(squad.get("Support", 0))),
+                random_choice=bool(self.getBoolFromInt(squad.get("RandomChoice", 0))), 
+                random_spawn=bool(self.getBoolFromInt(squad.get("Randomspawn", 0)))
+            )
+            if "TFBot" in squad:
+                mercenarys_on_wave = squad.get("TFBot", {})
+            elif "Squad" in squad:
+                mercenarys_on_wave = squad.get("Squad", {}).get("TFBot", {})
+            
+            squad_settings = SquadSettingsGlobal.SquadList.get(name, {})
+            
+            if isinstance(mercenarys_on_wave, list):
+                for mercenary in mercenarys_on_wave:
+                    ready_mercenary = self.loadMercenaries(mercenary, name)
+                    squad_settings["InSquad"].append(ready_mercenary)
+            else:
+                ready_mercenary = self.loadMercenaries(mercenarys_on_wave, name)
+                squad_settings["InSquad"].append(ready_mercenary)
+            
+            AllSquads.append(name)
+            
+        return AllSquads
+
+    def loadMercenaries(self, data, squadName : str):
+        if not self.data:
+            return
+        
+        Primary = WeaponData()
+        Primary.Set_Settings_From_Save(data["Primary Weapon"])
+        
+        Secondary = WeaponData()
+        Secondary.Set_Settings_From_Save(data["Secondary Weapons"])
+        
+        Melee = WeaponData()
+        Melee.Set_Settings_From_Save(data["Melee"])
+        
+        stats_mercenary = {
+            "Name":                data.get("Name"),
+            "Template":            data.get("Template"),
+            "Class":                data.get["Class"],
+            "Class Name":          data.get("Class Name"),
+            "Icon":                data.get("Icon"),
+            "Health":              data.get("Health"),
+            "Scale":               data.get("Scale"),
+            "MaxVision":           data.get("MaxVision"),
+            "AutoJump Min":        data.get("AutoJump Min"),
+            "AutoJump Max":        data.get("AutoJump Max"),
+            "Tag":                 data.get("Tag"),
+            "Skill":               data.get("Skill"),
+            "Weapon Restriction":  data.get("Weapon Restriction"),
+            "Behavior":            data.get("Behavior"),
+            "Cosmetics":           data.get("Cosmetics"),
+            "CharacterAttributes": data.get("CharacterAttributes", {}),
+            "Tag_Attributes":      data.get("Tag_Attributes", []),
+            "Attributes":          data.get("Attributes", []),
+            "Custom Parametrs":    data.get("Custom Parametrs"),
+            "Squad":               data.get("Squad"),
+            "power":               data.get("power"),
+            
+            #"model":               default_stat.Mercenary[data.get("Class")]["Model"] if data.get("Class") in default_stat.Mercenary else None,
+            "Primary Weapon":      Primary,
+            "Secondary Weapons":   Secondary,
+            "Melee":               Melee     
+        }
+        
+        exemplar = Mercenary(squadName)
+        exemplar.Set_Stat_from_Save(stats_mercenary)
+        
+        if data.get("Template", None) is not None:
+            exemplar.change_to_template(data["Template"], data.get("Cosmetics", []), data.get("Tag", []))        
+        return exemplar
+    
+    def getStringLineFromList(self, line: dict) -> str:
+        """Преобразует словарь в строку с переносами строк"""
+        output_lines = []
+        
+        if isinstance(line, str):
+            output_lines.append(line)
+        else:
+            for key, value in line.items():
+                output_lines.append(f"{key} {value}")
+            
+        return "\n".join(output_lines)
+    
+    def getBoolFromInt(self, value) -> bool:
+        """Преобразует целое число в булево значение"""
+        if isinstance(value, str):
+            if value == "True":
+                return True
+            else:
+                return False
+        elif isinstance(value, int):
+            if value == 1:
+                return True
+            else:
+                return False
+        return False
+
+class TemplateReader:
+    def __init__(self):
+        population_template_file = Path(os.path.join(f"{GamePath}", 'tf2_misc_dir.vpk'))
+        vpk_file_texture = vpk.open(population_template_file)
+        
+        template_files_path = f"{resources()}/resources/templates"
+        if os.path.exists(template_files_path) == False:
+            os.makedirs(template_files_path)
+            
+        if os.path.exists(f"{template_files_path}/robot_standard.pop") == False:
+            path_inside = "scripts/population"
+            robot_standard = f"{path_inside}/robot_standard.pop"
+            robot_gatebot = f"{path_inside}/robot_gatebot.pop"
+            robot_giant = f"{path_inside}/robot_giant.pop"
+            
+            vpk_file_texture.get_file(robot_standard).save(f"{template_files_path}/robot_standard.pop")
+            vpk_file_texture.get_file(robot_gatebot).save(f"{template_files_path}/robot_gatebot.pop")
+            vpk_file_texture.get_file(robot_giant).save(f"{template_files_path}/robot_giant.pop")
+            
+        self.robot_standard = dict(ValveFormat().parse_file(Path(f"{template_files_path}/robot_standard.pop"))["WaveSchedule"]["Templates"])
+        self.robot_gatebot = dict(ValveFormat().parse_file(Path(f"{template_files_path}/robot_gatebot.pop"))["WaveSchedule"]["Templates"])
+        self.robot_giant = dict(ValveFormat().parse_file(Path(f"{template_files_path}/robot_giant.pop"))["WaveSchedule"]["Templates"])
+        
+    def getAllTemplates(self) -> dict:
+        """Возвращает все шаблоны"""
+        all_templates = {}
+        all_templates.update(self.robot_standard)
+        all_templates.update(self.robot_gatebot)
+        all_templates.update(self.robot_giant)
+        return all_templates.copy()
 
 def Create_Mercenary_From_Save(list : dict, squadName, isGenerated = False):
     exemplar  = Mercenary(squadName)
@@ -7231,7 +7804,7 @@ def open_weapon(*arg, type = "Primary"):
 
     if Addition_interface == None:
         type_now_weapon = type
-        Ui_GroupBox().setupUi()
+        Ui_GroupBox().setupUi("Weapon")
         _tile  = Tile()
         _stat = weapons_libary.Weapon_Libary[Mercenary_now.stat["Class Name"]][type]
         _tile.firstStat = _stat
@@ -7242,7 +7815,7 @@ def open_weapon(*arg, type = "Primary"):
         Addition_interface = None
         
         type_now_weapon = type
-        Ui_GroupBox().setupUi()
+        Ui_GroupBox().setupUi("Weapon")
         _tile  = Tile()
         _stat = weapons_libary.Weapon_Libary[Mercenary_now.stat["Class Name"]][type]
         _tile.firstStat = _stat
@@ -7253,7 +7826,7 @@ def open_weapon(*arg, type = "Primary"):
         type_now_weapon = None
 
 def open_addition_panel(stat):
-    Ui_GroupBox().setupUi(stat)
+    Ui_GroupBox().setupUi(stat, "Cosmetic")
     Tile().AddButton(items = stat, index = -1)
 
 def get_icon_from_game(iconKey : int) -> str:
@@ -7319,58 +7892,6 @@ def close_app():
     temp = Path(f"{resources()}/resources/temp")
     if temp.exists():
         shutil.rmtree(temp)
-        
-colorQuality = {
-    "Unique" :      "217, 210, 41",
-    "Normal" :      "178, 178, 178",
-    "Genuine" :     "77, 116, 85",
-    "Vintage" :     "71, 98, 145",
-    "Unusual" :     "134, 80, 172",
-    "Strange" :     "207, 106, 50",
-    "Collector" :   "170, 0, 0",
-    "Haunted" :     "56, 243, 171",
-    "Decorated" :   "250, 250, 250",
-    "Community" :   "112, 176, 74",
-    "Valve" :       "165, 15, 121",
-}
-
-
-# === Глобальные менеджеры и основные объекты приложения ===
-generalGlobal = General()
-SaveManagerGlobal = SaveManager()
-InitSettingsGlobal = InitialSettings()
-WaveManagerGlobal = WaveManager()
-CustomAtributeGlobal = CustomAtributes()
-
-# === Переменные для управления интерфейсом и состоянием ===
-buttonMercenaryActive = None
-started_click = False
-SquadSettingsGlobal = None
-
-ModelViewRuntime = None
-mainWin = None
-selfMainWin = None
-TileGlobal = None
-Addition_interface = None
-
-# === Переменные для хранения данных и глобальных списков ===
-Global_Components = {}
-Atribute_global = None
-cosmetic_list_class = None
-type_now_weapon = None
-_AddButtonInWaveList = None
-General_Information_Robot = {}
-AnchorModel = None
-
-# === Переменные для работы с файлами и проектом ===
-project_file = None
-path_project_file = None
-
-# === Переменные для текущего состояния и выбора ===
-listButtonForMercenary = []
-Mercenary_now = None
-CurrentWave = None
-
 
 def load_or_create_config(config_path: Path) -> dict:
     """
@@ -7398,7 +7919,6 @@ def load_or_create_config(config_path: Path) -> dict:
             config = {}
     
     return config
-
 
 def get_game_folder(icon_path: Path = None) -> Path:
     """
@@ -7446,7 +7966,6 @@ def get_game_folder(icon_path: Path = None) -> Path:
     finally:
         root.destroy()
 
-
 def save_config(config_path: Path, config: dict) -> bool:
     """
     Сохраняет конфигурацию в файл.
@@ -7465,7 +7984,6 @@ def save_config(config_path: Path, config: dict) -> bool:
     except IOError as e:
         print(f"Ошибка сохранения конфигурации: {e}")
         return False
-
 
 def get_game_path(resources_func) -> Path:
     """
@@ -7508,19 +8026,66 @@ def get_game_path(resources_func) -> Path:
         else:
             print("Ошибка сохранения конфигурации, попробуйте еще раз.")
 
-GamePath = get_game_path(resources)
 
+# === Файлы и пути ===
+GamePath = get_game_path(resources)
 items_file = Path(os.path.join(f"{GamePath}/scripts/items", 'items_game.txt'))
 vpk_file = f"{GamePath}/tf2_textures_dir.vpk"
 vpk_file_texture = vpk.open(vpk_file)
+
+# === Глобальные менеджеры и основные объекты приложения ===
+generalGlobal = General()
+SaveManagerGlobal = SaveManager()
+InitSettingsGlobal = InitialSettings()
+WaveManagerGlobal = WaveManager()
+CustomAtributeGlobal = CustomAtributes()
+TemplateLibary = TemplateReader()
+
+# === Переменные для управления интерфейсом и состоянием ===
+started_click = False
+SquadSettingsGlobal = None
+
+ModelViewRuntime = None
+mainWin = None
+selfMainWin = None
+TileGlobal = None
+Addition_interface = None
+
+# === Переменные для хранения данных и глобальных списков ===
+Global_Components = {}
+Atribute_global = None
+cosmetic_list_class = None
+type_now_weapon = None
+_AddButtonInWaveList = None
+General_Information_Robot = {}
+AnchorModel = None
+
+# === Переменные для работы с файлами и проектом ===
+path_project_file = None
+
+# === Переменные для текущего состояния и выбора ===
+listButtonForMercenary = []
+Mercenary_now = None
+CurrentWave = None
+
+colorQuality = {
+    "Unique" :      "217, 210, 41",
+    "Normal" :      "178, 178, 178",
+    "Genuine" :     "77, 116, 85",
+    "Vintage" :     "71, 98, 145",
+    "Unusual" :     "134, 80, 172",
+    "Strange" :     "207, 106, 50",
+    "Collector" :   "170, 0, 0",
+    "Haunted" :     "56, 243, 171",
+    "Decorated" :   "250, 250, 250",
+    "Community" :   "112, 176, 74",
+    "Valve" :       "165, 15, 121",
+}
 
 if items_file is not None:
     try:
         parser = TF2ItemsParser(items_file)
         parser.load()
-        #all_game_items = parser.get_all_items()
-        #print(f"\nTotal items loaded: {len(all_game_items)}")
-        
     except ImportError as e:
         print(f"Ошибка импорта: {e}")
         sys.exit(1)
